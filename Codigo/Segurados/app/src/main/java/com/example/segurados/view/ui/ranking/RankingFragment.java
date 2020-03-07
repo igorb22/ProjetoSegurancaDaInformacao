@@ -1,4 +1,4 @@
-package com.example.segurados.ui.jogar;
+package com.example.segurados.view.ui.ranking;
 
 
 import android.os.Bundle;
@@ -14,10 +14,10 @@ import com.example.segurados.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class JogarFragment extends Fragment {
+public class RankingFragment extends Fragment {
 
 
-    public JogarFragment() {
+    public RankingFragment() {
         // Required empty public constructor
     }
 
@@ -26,9 +26,7 @@ public class JogarFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v = inflater.inflate(R.layout.fragment_jogar, container, false);
-
-
+        View v =  inflater.inflate(R.layout.fragment_ranking, container, false);
 
         return v;
     }

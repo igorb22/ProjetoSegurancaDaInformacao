@@ -1,4 +1,4 @@
-package com.example.segurados.ui.perfil;
+package com.example.segurados.view.ui.jogar;
 
 
 import android.os.Bundle;
@@ -14,21 +14,19 @@ import com.example.segurados.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class PerfilFragment extends Fragment {
+public class JogarFragment extends Fragment {
 
 
-    public PerfilFragment() {
+    public JogarFragment() {
         // Required empty public constructor
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View v =  inflater.inflate(R.layout.fragment_perfil, container, false);
-
-
-
+        View v = inflater.inflate(R.layout.fragment_jogar, container, false);
 
 
 

@@ -1,12 +1,13 @@
-package com.example.segurados;
+package com.example.segurados.view;
 
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.example.segurados.ui.jogar.JogarFragment;
-import com.example.segurados.ui.perfil.PerfilFragment;
-import com.example.segurados.ui.ranking.RankingFragment;
+import com.example.segurados.R;
+import com.example.segurados.view.ui.jogar.JogarFragment;
+import com.example.segurados.view.ui.perfil.PerfilFragment;
+import com.example.segurados.view.ui.ranking.RankingFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.annotation.NonNull;
