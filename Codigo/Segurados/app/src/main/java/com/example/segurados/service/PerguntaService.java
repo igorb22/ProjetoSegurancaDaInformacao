@@ -11,14 +11,14 @@ import retrofit2.http.Path;
 
 public interface PerguntaService {
 
-    @GET("/Pergunta/{id}")
+    @GET("pergunta/{id}")
     Call<Pergunta> getPergunta(@Path("id") int id);
 
-    @GET("/Pergunta")
+    @GET("pergunta")
     Call<List<Pergunta>> getPerguntas();
 
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("https://.../")
+            .baseUrl("http://italabs-001-site1.ctempurl.com/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 }

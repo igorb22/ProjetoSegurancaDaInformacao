@@ -12,15 +12,15 @@ import retrofit2.http.Path;
 
 public interface TematicaService {
 
-    @GET("/Tematica/{id}")
+    @GET("tematica/{id}")
     Call<Tematica> getTematica(@Path("id") int id);
 
 
-    @GET("/Tematica")
+    @GET("tematica")
     Call<List<Tematica>> getTematicas();
 
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("https://.../")
+            .baseUrl("http://italabs-001-site1.ctempurl.com/api/")
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 }
