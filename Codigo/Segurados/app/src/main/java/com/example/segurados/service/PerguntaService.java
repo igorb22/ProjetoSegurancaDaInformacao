@@ -2,9 +2,7 @@ package com.example.segurados.service;
 
 import com.example.segurados.model.Pergunta;
 import com.example.segurados.model.Usuario;
-
 import java.util.List;
-
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

@@ -26,7 +26,7 @@ namespace SeguradosAPI.Persistence
             {
                 entity.HasKey(e => new { e.IdPergunta, e.TematicaIdTematica });
 
-                entity.ToTable("pergunta", "bd_segurados");
+                entity.ToTable("Pergunta", "db_a560bd_italabs");
 
                 entity.HasIndex(e => e.IdPergunta)
                     .HasName("idPergunta_UNIQUE")
@@ -104,7 +104,7 @@ namespace SeguradosAPI.Persistence
             {
                 entity.HasKey(e => e.IdTematica);
 
-                entity.ToTable("tematica", "bd_segurados");
+                entity.ToTable("Tematica", "db_a560bd_italabs");
 
                 entity.Property(e => e.IdTematica)
                     .HasColumnName("idTematica")
@@ -126,7 +126,7 @@ namespace SeguradosAPI.Persistence
             {
                 entity.HasKey(e => e.IdUsuario);
 
-                entity.ToTable("usuario", "bd_segurados");
+                entity.ToTable("Usuario", "db_a560bd_italabs");
 
                 entity.HasIndex(e => e.IdUsuario)
                     .HasName("idUsuario_UNIQUE")
@@ -165,7 +165,7 @@ namespace SeguradosAPI.Persistence
             {
                 entity.HasKey(e => new { e.IdUsuario, e.IdPergunta });
 
-                entity.ToTable("usuario_has_pergunta", "bd_segurados");
+                entity.ToTable("Usuario_has_Pergunta", "db_a560bd_italabs");
 
                 entity.HasIndex(e => e.IdPergunta)
                     .HasName("fk_Usuario_has_Pergunta_Pergunta1_idx");
