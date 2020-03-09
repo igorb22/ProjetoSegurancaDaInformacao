@@ -38,6 +38,18 @@ namespace SeguradosAPI.Services
             return false;
         }
 
+        public UsuarioModel ObterPorEmailSenha(string email, string senha)
+         => _context
+                .Usuario
+                .Where(r => r.Email == email && r.Senha == senha)
+                .Select(r => new UsuarioModel
+                {
+                    IdUsuario = r.IdUsuario,
+                    Email = r.Email,
+                    Nome = r.Nome,
+                    Perfil = r.Perfil,
+                }).FirstOrDefault();
+
         public UsuarioModel ObterPorId(int id)
             => _context
                 .Usuario

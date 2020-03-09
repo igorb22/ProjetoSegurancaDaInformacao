@@ -46,42 +46,43 @@ public class PerfilFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                /*
-                PerguntaService pergunta = PerguntaService.retrofit.create(PerguntaService.class);
-                final Call<Pergunta> call = pergunta.getPergunta(1);
+
+                UsuarioService usuario = UsuarioService.retrofit.create(UsuarioService.class);
+                final Call<Usuario> call = usuario.authenticate("igorb22@live.com","98425537");
 
 
-                call.enqueue(new Callback<Pergunta>() {
+                call.enqueue(new Callback<Usuario>() {
                     @Override
-                    public void onResponse(Call<Pergunta> call, Response<Pergunta> response) {
+                    public void onResponse(Call<Usuario> call, Response<Usuario> response) {
                         int code = response.code();
 
                         if(code == 200){
-                            Pergunta usuarios = response.body();
+                            Usuario usuarios = response.body();
 
-                            Toast.makeText(getContext(),"NOME: "+usuarios.getAlternativa1()
-                                            +"EMAIL: "+usuarios.getAlternativa2()
-                                            +"ID: "+usuarios.getAlternativa3()
-                                            +"PERFIL: "+usuarios.getAlternativa4(),
+                            Toast.makeText(getContext(),"NOME: "+usuarios.getNome()
+                                            +"EMAIL: "+usuarios.getPerfil()
+                                            +"ID: "+usuarios.getIdUsuario()
+                                            +"PERFIL: "+usuarios.getEmail(),
                                     Toast.LENGTH_LONG).show();
 
                         }else{
 
-                            Toast.makeText(getContext(),"Falhou",
+                            Toast.makeText(getContext(),"Falhou: "+code,
                                     Toast.LENGTH_LONG).show();
                         }
 
                     }
 
                     @Override
-                    public void onFailure(Call<Pergunta> call, Throwable t) {
-
+                    public void onFailure(Call<Usuario> call, Throwable t) {
+                        Toast.makeText(getContext(),t.getMessage(),
+                                Toast.LENGTH_LONG).show();
                     }
 
 
                 });
 
-                 */
+
             }
         });
 

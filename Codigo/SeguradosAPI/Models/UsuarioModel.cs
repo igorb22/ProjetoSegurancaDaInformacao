@@ -1,4 +1,5 @@
-﻿namespace SeguradosAPI.Models
+﻿
+namespace SeguradosAPI.Models
 {
     public class UsuarioModel
     {
@@ -7,5 +8,6 @@
         public string Email { get; set; }
         public string Senha { get; set; }
         public string Perfil { get; set; }
+
     }
 }
