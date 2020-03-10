@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.example.segurados.R;
 import com.example.segurados.model.Pergunta;
 import com.example.segurados.model.Usuario;
+import com.example.segurados.model.UsuarioViewModel;
+import com.example.segurados.service.AuthenticateService;
 import com.example.segurados.service.PerguntaService;
 import com.example.segurados.service.UsuarioService;
 
@@ -45,42 +47,6 @@ public class PerfilFragment extends Fragment {
         requisicao.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                UsuarioService usuario = UsuarioService.retrofit.create(UsuarioService.class);
-                final Call<Usuario> call = usuario.authenticate("igorb22@live.com","98425537");
-
-
-                call.enqueue(new Callback<Usuario>() {
-                    @Override
-                    public void onResponse(Call<Usuario> call, Response<Usuario> response) {
-                        int code = response.code();
-
-                        if(code == 200){
-                            Usuario usuarios = response.body();
-
-                            Toast.makeText(getContext(),"NOME: "+usuarios.getNome()
-                                            +"EMAIL: "+usuarios.getPerfil()
-                                            +"ID: "+usuarios.getIdUsuario()
-                                            +"PERFIL: "+usuarios.getEmail(),
-                                    Toast.LENGTH_LONG).show();
-
-                        }else{
-
-                            Toast.makeText(getContext(),"Falhou: "+code,
-                                    Toast.LENGTH_LONG).show();
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<Usuario> call, Throwable t) {
-                        Toast.makeText(getContext(),t.getMessage(),
-                                Toast.LENGTH_LONG).show();
-                    }
-
-
-                });
 
 
             }

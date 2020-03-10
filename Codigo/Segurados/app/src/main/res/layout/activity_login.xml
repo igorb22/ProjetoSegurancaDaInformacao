@@ -60,7 +60,7 @@
 
                 <AutoCompleteTextView
                     android:layout_marginTop="5pt"
-                    android:id="@+id/usuario"
+                    android:id="@+id/edtEmail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_email"
@@ -71,7 +71,7 @@
 
                 <EditText
                     android:layout_marginTop="5pt"
-                    android:id="@+id/senha"
+                    android:id="@+id/edtSenha"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/prompt_password"
@@ -81,6 +81,14 @@
                     android:inputType="textPassword"
                     android:maxLines="1"
                     android:singleLine="true" />
+                <TextView
+                    android:id="@+id/msgErro"
+                    android:visibility="gone"
+                    android:layout_width="wrap_content"
+                    android:textColor="#ff0000"
+                    android:text="Email/Senha incorreto!. Tente novamente."
+                    android:layout_height="wrap_content"/>
+
 
                 <Button
                     android:layout_marginTop="5pt"

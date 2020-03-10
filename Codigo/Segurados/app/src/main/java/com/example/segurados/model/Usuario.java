@@ -1,18 +1,34 @@
 package com.example.segurados.model;
 
-public class Usuario {
+import io.realm.RealmObject;
+
+public class Usuario{
     private int idUsuario;
     private String nome;
     private String email;
+    private String senha;
     private String perfil;
 
-    public Usuario(int idUsuario, String nome, String email, String perfil) {
+
+
+    public Usuario(){}
+
+    public Usuario(int idUsuario, String nome, String email, String perfil,
+                   String senha) {
         this.idUsuario = idUsuario;
         this.nome = nome;
         this.email = email;
         this.perfil = perfil;
+        this.senha = senha;
     }
 
+    public String getSenha() {
+        return senha;
+    }
+
+    public void setSenha(String senha) {
+        this.senha = senha;
+    }
 
     public void setIdUsuario(int idUsuario) {
         this.idUsuario = idUsuario;
@@ -48,6 +64,12 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return (nome + " - " + email);
+        return ("{ \n" +
+                "\"idUsuario\": " +idUsuario+", \n"+
+                "\"nome\": \"" +nome + "\",\n" +
+                "\"email\": \"" +email+"\", \n" +
+                "\"senha\": \"" +senha+"\", \n" +
+                "\"perfil\": \"" +perfil+"\" \n"+
+                "}");
     }
 }
