@@ -1,5 +1,6 @@
 ﻿using SeguradosAPI.Models;
 using SeguradosAPI.Persistence;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -45,7 +46,7 @@ namespace SeguradosAPI.Services
                 .Select(r => new UsuarioHasPerguntaModel
                 {
                     IdPergunta = r.IdPergunta,
-                    Acertou = r.Acertou,
+                    Acertou = Convert.ToByte(r.Acertou),
                     IdUsuario = r.IdUsuario
                 }).FirstOrDefault();
 
@@ -55,7 +56,7 @@ namespace SeguradosAPI.Services
                 .Select(r => new UsuarioHasPerguntaModel
                 {
                     IdPergunta = r.IdPergunta,
-                    Acertou = r.Acertou,
+                    Acertou = Convert.ToByte(r.Acertou),
                     IdUsuario = r.IdUsuario
                 }).ToList();
 
@@ -74,8 +75,7 @@ namespace SeguradosAPI.Services
         {
             entity.IdUsuario = model.IdUsuario;
             entity.IdPergunta = model.IdPergunta;
-            entity.Acertou = model.Acertou;
-
+            entity.Acertou = Convert.ToInt32(model.Acertou);
             return entity;
         }
     }

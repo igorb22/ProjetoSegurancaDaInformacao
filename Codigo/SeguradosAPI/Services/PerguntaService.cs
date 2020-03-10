@@ -74,6 +74,23 @@ namespace SeguradosAPI.Services
                     Tempo = r.Tempo
                 }).ToList();
 
+        public List<PerguntaModel> ObterPorUsuario(int idUsuario)
+           => _context
+               .Pergunta
+               .Select(r => new PerguntaModel
+               {
+                   IdPergunta = r.IdPergunta,
+                   OpcaoCorreta = r.OpcaoCorreta,
+                   Alternativa1 = r.Alternativa1,
+                   Alternativa2 = r.Alternativa2,
+                   Alternativa3 = r.Alternativa3,
+                   Alternativa4 = r.Alternativa4,
+                   Dificuldade = r.Dificuldade,
+                   Pontuacao = r.Pontuacao,
+                   Questao = r.Questao,
+                   TematicaIdTematica = r.TematicaIdTematica,
+                   Tempo = r.Tempo
+               }).ToList();
         public bool Remover(int id)
         {
             var obj = _context.Pergunta.Where(m => m.IdPergunta == id).FirstOrDefault();

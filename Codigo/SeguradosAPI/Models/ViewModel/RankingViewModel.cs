@@ -5,10 +5,9 @@ using System.Threading.Tasks;
 
 namespace SeguradosAPI.Models.ViewModel
 {
-    public class PontosPorTematicaViewModel
+    public class RankingViewModel
     {
+        public string NomeUsuario { get; set; }
         public int Pontos { get; set; }
-        public TematicaModel TematicaModel { get; set; }
-
     }
 }
