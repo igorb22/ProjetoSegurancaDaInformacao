@@ -52,13 +52,17 @@ namespace SeguradosAPI.Controllers
                         new RankingViewModel
                         {
                             NomeUsuario = user.Nome,
-                            Pontos = perguntasUsuario.Sum(x => Int32.Parse(x.pontuacao))
+                            Pontos = perguntasUsuario.Sum(x => Int32.Parse(x.pontuacao)),
+                            Perfil = user.Perfil
                         }
                     );
             }
 
             if (ranking != null)
+            {
+                ranking.OrderBy(s => s.Pontos);
                 return Ok(ranking);
+            }
 
             return NoContent();
         }

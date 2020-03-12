@@ -9,5 +9,6 @@ namespace SeguradosAPI.Models.ViewModel
     {
         public string NomeUsuario { get; set; }
         public int Pontos { get; set; }
+        public string Perfil { get; set; }
     }
 }

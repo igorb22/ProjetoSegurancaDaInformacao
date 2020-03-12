@@ -1,16 +1,139 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".view.ui.perfil.PerfilFragment">
 
-    <Button
-        android:id="@+id/btnRequisicao"
-        android:text="requisicao"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginHorizontal="3pt"
+            android:layout_marginTop="10pt"
+            app:cardCornerRadius="3dp"
+            app:cardElevation="4dp"
+            app:cardUseCompatPadding="true">
 
-</LinearLayout>
+            <!-- put whatever you want -->
+            <LinearLayout
+                android:id="@+id/container_perfil_p"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginHorizontal="2pt"
+                android:background="@color/cardview_light_background"
+                android:orientation="vertical"
+                android:weightSum="10">
+
+                <TextView
+                    android:id="@+id/meu_perfil_p"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:text="@string/meu_perfil"
+                    android:textAllCaps="true"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="14pt" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="2pt"
+                    android:orientation="horizontal">
+
+                    <de.hdodenhof.circleimageview.CircleImageView
+                        android:id="@+id/img_perfil_p"
+                        android:layout_width="40pt"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:src="@drawable/ic_profile" />
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="1pt"
+                        android:layout_weight="8"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/nome_jogador_p"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="1pt"
+                            android:text="@string/nome_jogador"
+                            android:textAllCaps="true"
+                            android:textSize="7pt" />
+
+                        <TextView
+                            android:id="@+id/pontos_jogador_p"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="1pt"
+                            android:text="@string/pontos_jogador"
+                            android:textAllCaps="true"
+                            android:textSize="7pt" />
+
+                        <TextView
+                            android:id="@+id/qtd_questoes_p"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="1pt"
+                            android:text="@string/qtd_questoes"
+                            android:textAllCaps="true"
+                            android:textSize="7pt" />
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/btn_editar_p"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:background="@drawable/background_button"
+                        android:text="@string/btn_editar"
+                        android:textColor="@android:color/white" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+        <View
+            android:id="@+id/linha_p"
+            android:layout_width="50pt"
+            android:layout_height="1pt"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="8pt"
+            android:background="@android:color/black" />
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:id="@+id/pie_chart_p"
+            android:layout_width="match_parent"
+            android:layout_height="190pt"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginHorizontal="3pt"
+            android:layout_marginTop="10pt">
+
+
+        </com.github.mikephil.charting.charts.PieChart>
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/btn_help_p"
+        android:layout_width="20pt"
+        android:layout_height="20pt"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="8pt"
+        android:background="@drawable/ic_help" />
+
+</FrameLayout>

@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void instanciaFragment(int i){
-
+    i = 3;
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
 

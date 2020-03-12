@@ -1,7 +1,8 @@
 package com.example.segurados.service;
 
 import com.example.segurados.constant.Constant;
-import com.example.segurados.model.Usuario;
+import com.example.segurados.model.RankingViewModel;
+import com.example.segurados.model.UsuarioViewModel;
 
 import java.util.List;
 
@@ -11,13 +12,14 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 
-public interface UsuarioService {
+public interface UsuarioEstatisticaService {
 
-    @GET("usuario/{id}")
-    Call<Usuario> getUsuario(@Path("id")int id);
+    @GET("estatistica/{idUsuario}")
+    Call<List<UsuarioViewModel>> getEstatistica(@Path("idUsuario") int idUsuario);
 
-    @GET("usuario")
-    Call<List<Usuario>> getUsuarios();
+    @GET("estatistica")
+    Call<List<RankingViewModel>> getRanking();
+
 
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(Constant.BASE_URL)
