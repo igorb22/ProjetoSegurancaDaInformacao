@@ -44,7 +44,7 @@ public class RankingAdapter extends RecyclerView.Adapter<RankingAdapter.RankingV
     @Override
     public void onBindViewHolder(@NonNull RankingViewHolder  viewHolder, int i) {
         //viewHolder.img baixar a imagem e setar
-        viewHolder.nome.setText(rankingViewModels.get(i).getNomeUsuario());
+        viewHolder.nome.setText(rankingViewModels.get(i).getNomeUsuario().toUpperCase());
         viewHolder.pontuacao.setText(""+rankingViewModels.get(i).getPontos());
         viewHolder.posicao.setText(""+(i+1));
         if(i == 0)

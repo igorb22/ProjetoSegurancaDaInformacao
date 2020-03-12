@@ -1,8 +1,13 @@
 package com.example.segurados.model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Tematica {
+    @SerializedName("idTematica")
     private int idTematica;
+    @SerializedName("titulo")
     private String titulo;
+    @SerializedName("descricao")
     private String descricao;
 
     public Tematica(int idTematica, String titulo, String descricao) {

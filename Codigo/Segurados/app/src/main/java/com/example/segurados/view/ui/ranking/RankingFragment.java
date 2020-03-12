@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.example.segurados.R;
@@ -29,6 +30,7 @@ import retrofit2.Response;
 public class RankingFragment extends Fragment {
     private RankingAdapter rankingAdapter;
     private RecyclerView mRecyclerView;
+    private ProgressBar pB;
     private UsuarioEstatisticaService usuarioEstatisticaService;
     public RankingFragment() {
         // Required empty public constructor
@@ -41,9 +43,12 @@ public class RankingFragment extends Fragment {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_ranking, container, false);
         mRecyclerView = v.findViewById(R.id.rcvRanking);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 2);
+        pB = v.findViewById(R.id.progress_bar_r);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getActivity(), 1);
         mRecyclerView.setHasFixedSize(true);
         mRecyclerView.setLayoutManager(layoutManager);
+        usuarioEstatisticaService = UsuarioEstatisticaService.retrofit.create(UsuarioEstatisticaService.class);
+
         final Call<List<RankingViewModel>> call =  usuarioEstatisticaService.getRanking();
         loadRanking(call);
         return v;
@@ -60,6 +65,7 @@ public class RankingFragment extends Fragment {
                     System.out.println(response.body().get(0).getPerfil());
                     rankingAdapter = new RankingAdapter(ranking, getActivity());
                     mRecyclerView.setAdapter(rankingAdapter);
+                    pB.setVisibility(View.GONE);
                 }else{
 
                     Toast.makeText(getContext(),"Falhou",

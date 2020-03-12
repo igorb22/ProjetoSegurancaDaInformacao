@@ -3,11 +3,8 @@ package com.example.segurados.model;
 import com.google.gson.annotations.SerializedName;
 
 public class RankingViewModel {
-    @SerializedName("nomeUsuario")
     private String nomeUsuario;
-    @SerializedName("pontos")
     private int pontos;
-    @SerializedName("perfil")
     private String perfil;
 
     public RankingViewModel(String nomeUsuario, int pontos, String perfil) {

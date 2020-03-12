@@ -1,32 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.cardview.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="2pt">
 
 
     <LinearLayout
-        android:orientation="vertical"
-        android:background="#e0e0e0"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="#e0e0e0"
+        android:orientation="vertical">
 
         <LinearLayout
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/txt_posicao_r"
-                android:textSize="9pt"
-                android:padding="5pt"
-                android:layout_gravity="center"
-                android:layout_width="wrap_content"
+                android:layout_width="15pt"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:padding="5pt"
                 android:text="@string/posicao_jogador"
-                />
+                android:textSize="9pt" />
 
 
             <FrameLayout
@@ -49,31 +48,29 @@
             </FrameLayout>
 
 
-
             <TextView
                 android:id="@+id/txt_usuario_r"
+                android:layout_width="60pt"
+                android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:textAlignment="center"
                 android:text="@string/nome_jogador"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:textAlignment="center" />
 
             <TextView
                 android:id="@+id/txt_pontuacao_r"
 
-                android:layout_width="wrap_content"
+                android:layout_width="55pt"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginStart="5pt"
-                android:layout_marginEnd="10pt"
                 android:gravity="end"
                 android:text="@string/pontos_jogador" />
 
             <ImageView
                 android:id="@+id/star_r"
-                android:layout_width="wrap_content"
+                android:layout_width="10pt"
                 android:layout_height="10pt"
                 android:layout_gravity="center"
+                android:layout_marginStart="5pt"
                 android:scaleType="center"
                 android:visibility="invisible"
                 app:srcCompat="@drawable/ic_best" />

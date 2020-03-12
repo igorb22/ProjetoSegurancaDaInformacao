@@ -1,6 +1,7 @@
 package com.example.segurados.view.ui.perfil;
 
 
+import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import com.example.segurados.model.Usuario;
 import com.example.segurados.model.UsuarioHasPergunta;
 import com.example.segurados.model.UsuarioViewModel;
 import com.example.segurados.service.UsuarioEstatisticaService;
+import com.example.segurados.service.UsuarioHasPerguntaService;
 import com.example.segurados.service.UsuarioService;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
@@ -47,7 +49,7 @@ import retrofit2.Response;
 public class PerfilFragment extends Fragment {
     private UsuarioService usuarioService;
     private UsuarioEstatisticaService usuarioEstatisticaService;
-    private UsuarioHasPergunta usuarioHasPergunta;
+    private UsuarioHasPerguntaService usuarioHasPergunta;
     private TextView txtNomeUsuario;
     private TextView pontosUsuario;
     private TextView qtdPerguntas;
@@ -73,25 +75,36 @@ public class PerfilFragment extends Fragment {
         txtNomeUsuario = v.findViewById(R.id.nome_jogador_p);
         pontosUsuario = v.findViewById(R.id.pontos_jogador_p);
         qtdPerguntas = v.findViewById(R.id.qtd_questoes_p);
-        imgPerfil = v.findViewById(R.id.img_perfil_r);
+        imgPerfil = v.findViewById(R.id.img_perfil_p);
 
         //----------------- Grafico Pizza ---------------------//
 
         //------------------ get data User --------------------//
 
         usuarioService = UsuarioService.retrofit.create(UsuarioService.class);
+        usuarioEstatisticaService = UsuarioEstatisticaService.retrofit.create(UsuarioEstatisticaService.class);
+        usuarioHasPergunta = UsuarioHasPerguntaService.retrofit.create(UsuarioHasPerguntaService.class);
 
         final Call<Usuario> call = usuarioService.getUsuario(2);
         final Call<List<UsuarioViewModel>> callEst = usuarioEstatisticaService.getEstatistica(2);
-        loadDataProfile(call);
-        loadEstsProfile(callEst);
+        final Call<List<UsuarioHasPergunta>> callQ = usuarioHasPergunta.getRespostas();
 
+        loadDataProfile(call);
         try {
-            Thread.sleep(2000);
+            Thread.sleep(3000);
             setGraphics();
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        loadEstsProfile(callEst);
+        try {
+            Thread.sleep(3000);
+            setGraphics();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        loadQtdPrguntas(callQ);
+
 
         btnEditar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -193,13 +206,14 @@ public class PerfilFragment extends Fragment {
 
     private void loadQtdPrguntas(Call<List<UsuarioHasPergunta>> call){
         call.enqueue(new Callback<List<UsuarioHasPergunta>>() {
+            @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(Call<List<UsuarioHasPergunta>> call, Response<List<UsuarioHasPergunta>> response) {
                 int code = response.code();
 
                 if(code == 200){
-                    List<UsuarioHasPergunta> pergUsuario = response.body();
-                   // getEntries(estatsUsuario);
+                    List<UsuarioHasPergunta> estatsUsuario= response.body();
+                   qtdPerguntas.setText(estatsUsuario.size() + getString(R.string.qtd_perguntas_t));
                 }else{
 
                     Toast.makeText(getContext(),"Falhou",
