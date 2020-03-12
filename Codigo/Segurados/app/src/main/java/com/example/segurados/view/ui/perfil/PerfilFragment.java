@@ -86,24 +86,12 @@ public class PerfilFragment extends Fragment {
         usuarioHasPergunta = UsuarioHasPerguntaService.retrofit.create(UsuarioHasPerguntaService.class);
 
         final Call<Usuario> call = usuarioService.getUsuario(2);
-        final Call<List<UsuarioViewModel>> callEst = usuarioEstatisticaService.getEstatistica(2);
-        final Call<List<UsuarioHasPergunta>> callQ = usuarioHasPergunta.getRespostas();
+   //     final Call<List<UsuarioViewModel>> callEst = usuarioEstatisticaService.getEstatistica(2);
 
         loadDataProfile(call);
-        try {
-            Thread.sleep(3000);
-            setGraphics();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        loadEstsProfile(callEst);
-        try {
-            Thread.sleep(3000);
-            setGraphics();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        loadQtdPrguntas(callQ);
+      //  loadEstsProfile(callEst);
+
+
 
 
         btnEditar.setOnClickListener(new View.OnClickListener() {
@@ -114,32 +102,29 @@ public class PerfilFragment extends Fragment {
         });
         return v;
     }
-       private void getEntries(List<UsuarioViewModel> estats) {
+       @SuppressLint("SetTextI18n")
+       private void setGraphic(List<UsuarioViewModel> estats) {
         pieEntries = new ArrayList<>();
+        int pontos = 0;
         for(UsuarioViewModel us : estats){
             pieEntries.add(new PieEntry(us.getPontos(), us.getTematica().getTitulo()));
+            pontos += us.getPontos();
         }
-    }
+           pontosUsuario.setText(pontos + " " + getString(R.string.pontoss));
+           pieDataSet = new PieDataSet(pieEntries, "");
+           pieData = new PieData(pieDataSet);
+           //   dataSet.setValueFormatter(get);
+           pieChart.setData(pieData);
+           pieChart.setDrawCenterText(true);
+           pieChart.setDrawHoleEnabled(false);
+           pieChart.getDescription().setText("Legenda");
+           pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+           pieDataSet.setSliceSpace(1f);
+           pieDataSet.setValueTextColor(Color.WHITE);
+           pieDataSet.setValueTextSize(10f);
+           pieChart.invalidate();
+       }
 
-    public String getFormattedValue(float value) {
-        return "" + ((int) value);
-    }
-
-    private void setGraphics(){
-        pieDataSet = new PieDataSet(pieEntries, "");
-        pieData = new PieData(pieDataSet);
-     //   dataSet.setValueFormatter(get);
-        pieChart.setData(pieData);
-        pieChart.setDrawCenterText(true);
-        pieChart.setDrawHoleEnabled(false);
-        pieChart.getDescription().setText("Legenda");
-
-        pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-        pieDataSet.setSliceSpace(1f);
-        pieDataSet.setValueTextColor(Color.WHITE);
-        pieDataSet.setValueTextSize(10f);
-
-    }
 
     private void loadDataProfile(Call<Usuario> call){
         call.enqueue(new Callback<Usuario>() {
@@ -164,6 +149,8 @@ public class PerfilFragment extends Fragment {
                                 }
                             })
                             .into(imgPerfil);      //classe que pega a foto da url e seta o imageView
+                    final Call<List<UsuarioViewModel>> callEst = usuarioEstatisticaService.getEstatistica(2);
+                    loadEstsProfile(callEst);
 
                 }else{
 
@@ -187,8 +174,11 @@ public class PerfilFragment extends Fragment {
                 int code = response.code();
 
                 if(code == 200){
-                    List<UsuarioViewModel> estatsUsuario= response.body();
-                    getEntries(estatsUsuario);
+                    List<UsuarioViewModel> estatsUsuario = response.body();
+                    setGraphic(estatsUsuario);
+                    System.out.println("opa");
+                    final Call<List<UsuarioHasPergunta>> callQ = usuarioHasPergunta.getRespostasUsuario(2);
+                    loadQtdPrguntas(callQ);
                 }else{
 
                     Toast.makeText(getContext(),"Falhou",
@@ -213,7 +203,9 @@ public class PerfilFragment extends Fragment {
 
                 if(code == 200){
                     List<UsuarioHasPergunta> estatsUsuario= response.body();
-                   qtdPerguntas.setText(estatsUsuario.size() + getString(R.string.qtd_perguntas_t));
+                    System.out.println("s " + estatsUsuario.size());
+                    qtdPerguntas.setText(estatsUsuario.size() + " " + getString(R.string.qtd_perguntas_t));
+
                 }else{
 
                     Toast.makeText(getContext(),"Falhou",
@@ -224,7 +216,7 @@ public class PerfilFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<UsuarioHasPergunta>> call, Throwable t) {
-
+                t.printStackTrace();
             }
         });
     }

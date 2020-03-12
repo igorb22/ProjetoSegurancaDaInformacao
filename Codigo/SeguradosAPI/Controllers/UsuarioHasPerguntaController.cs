@@ -25,10 +25,10 @@ namespace SeguradosAPI.Controllers
         }
 
         // GET: api/UsuarioHasPergunta/5
-        [HttpGet("{idUsuario}/{idPergunta}")]
-        public IActionResult Get(int idUsuario, int idPergunta)
+        [HttpGet("{idUsuario}")]
+        public IActionResult Get(int idUsuario)
         {
-            var usuarioPergunta = _service.ObterPorId(idUsuario, idPergunta);
+            var usuarioPergunta = _service.ObterPorId(idUsuario);
             if (usuarioPergunta != null)
                 return Ok(usuarioPergunta);
 

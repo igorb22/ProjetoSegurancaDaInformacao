@@ -7,7 +7,7 @@ namespace SeguradosAPI.Services
     {
         bool Add(UsuarioHasPerguntaModel objeto);
         bool Atualizar(UsuarioHasPerguntaModel objeto);
-        UsuarioHasPerguntaModel ObterPorId(int idUsuario, int idPergunta);
+        List<UsuarioHasPerguntaModel> ObterPorId(int idUsuario);
         List<UsuarioHasPerguntaModel> ObterTodos();
         bool Remover(int idUsuario, int idPergunta);
     }

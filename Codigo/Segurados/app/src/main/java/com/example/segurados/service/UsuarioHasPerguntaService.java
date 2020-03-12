@@ -13,8 +13,8 @@ import retrofit2.http.Path;
 
 public interface UsuarioHasPerguntaService {
 
-    @GET("usuariohaspergunta/{idUsuario}/{idPergunta}")
-    Call<UsuarioHasPergunta> getResposta(@Path("idUsuario/idPergunta") int idUsuario, int idPergunta);
+    @GET("usuariohaspergunta/{idUsuario}")
+    Call<List<UsuarioHasPergunta>> getRespostasUsuario(@Path("idUsuario") int idUsuario);
 
     @GET("usuariohaspergunta")
     Call<List<UsuarioHasPergunta>> getRespostas();

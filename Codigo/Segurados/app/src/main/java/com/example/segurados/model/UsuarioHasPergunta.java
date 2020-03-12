@@ -1,11 +1,16 @@
 package com.example.segurados.model;
 
-public class UsuarioHasPergunta {
-    private int idPergunta;
-    private int idUsuario;
-    private boolean acertou;
+import com.google.gson.annotations.SerializedName;
 
-    public UsuarioHasPergunta(int idPergunta, int idUsuario, boolean acertou) {
+public class UsuarioHasPergunta {
+    @SerializedName("idPergunta")
+    private int idPergunta;
+    @SerializedName("idJogador")
+    private int idUsuario;
+    @SerializedName("acertou")
+    private int acertou;
+
+    public UsuarioHasPergunta(int idPergunta, int idUsuario, int acertou) {
         this.idPergunta = idPergunta;
         this.idUsuario = idUsuario;
         this.acertou = acertou;
@@ -19,7 +24,7 @@ public class UsuarioHasPergunta {
         this.idUsuario = idUsuario;
     }
 
-    public void setAcertou(boolean acertou) {
+    public void setAcertou(int acertou) {
         this.acertou = acertou;
     }
 
@@ -31,7 +36,7 @@ public class UsuarioHasPergunta {
         return idUsuario;
     }
 
-    public boolean isAcertou() {
+    public int isAcertou() {
         return acertou;
     }
 }

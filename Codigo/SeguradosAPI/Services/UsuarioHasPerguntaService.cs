@@ -39,16 +39,15 @@ namespace SeguradosAPI.Services
             return false;
         }
 
-        public UsuarioHasPerguntaModel ObterPorId(int idUsuario, int idPergunta)
-            => _context
-                .UsuarioHasPergunta
-                .Where(r => r.IdUsuario == idUsuario && r.IdPergunta == idPergunta)
-                .Select(r => new UsuarioHasPerguntaModel
-                {
-                    IdPergunta = r.IdPergunta,
-                    Acertou = Convert.ToByte(r.Acertou),
-                    IdUsuario = r.IdUsuario
-                }).FirstOrDefault();
+        public List<UsuarioHasPerguntaModel> ObterPorId(int idUsuario)
+                   => _context
+                       .UsuarioHasPergunta
+                       .Select(r => new UsuarioHasPerguntaModel
+                       {
+                           IdPergunta = r.IdPergunta,
+                           Acertou = Convert.ToByte(r.Acertou),
+                           IdUsuario = r.IdUsuario
+                       }).Where(s => s.IdUsuario == idUsuario) .ToList();
 
         public List<UsuarioHasPerguntaModel> ObterTodos()
             => _context
