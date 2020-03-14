@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Spinning Wheel</string>
+
+    <string-array name="dummy">
+        <item>Carregando.</item>
+        <item>Carregando..</item>
+        <item>Carregando...</item>
+    </string-array>
+</resources>

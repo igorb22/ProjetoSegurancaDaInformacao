@@ -3,12 +3,52 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.ui.jogar.JogarFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <com.adefruandta.spinningwheel.SpinningWheelView
+        android:id="@+id/wheel_j"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="fragmetn jogar" />
+        android:layout_height="180pt"
+        android:layout_gravity="center"
+        android:layout_marginHorizontal="4pt"
+        android:visibility="invisible"
+        app:wheel_arrow_color="@color/colorPrimaryDark"
+        app:wheel_arrow_height="30pt"
+        app:wheel_arrow_width="30pt"
+        app:wheel_colors="@array/rainbow_dash"
+        app:wheel_items="@array/dummy"
+        app:wheel_stroke_color="@android:color/black"
+        app:wheel_stroke_width="1pt" />
+
+    <Button
+        android:id="@+id/btn_girar_j"
+        android:layout_width="20pt"
+        android:layout_height="20pt"
+        android:layout_gravity="center"
+        android:background="@drawable/circle_button"
+        android:paddingHorizontal="0.2pt"
+        android:text="@string/girar"
+        android:textAllCaps="true"
+        android:textColor="@android:color/white"
+        android:visibility="invisible" />
+
+    <TextView
+        android:id="@+id/txt_carregando_j"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Carregando..."
+        android:textAllCaps="true"
+        android:textColor="@color/colorPrimary"
+        android:textSize="12pt" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar_j"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="25pt" />
 
 </FrameLayout>

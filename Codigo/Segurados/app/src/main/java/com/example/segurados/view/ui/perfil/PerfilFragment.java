@@ -86,13 +86,7 @@ public class PerfilFragment extends Fragment {
         usuarioHasPergunta = UsuarioHasPerguntaService.retrofit.create(UsuarioHasPerguntaService.class);
 
         final Call<Usuario> call = usuarioService.getUsuario(2);
-   //     final Call<List<UsuarioViewModel>> callEst = usuarioEstatisticaService.getEstatistica(2);
-
         loadDataProfile(call);
-      //  loadEstsProfile(callEst);
-
-
-
 
         btnEditar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -176,7 +170,6 @@ public class PerfilFragment extends Fragment {
                 if(code == 200){
                     List<UsuarioViewModel> estatsUsuario = response.body();
                     setGraphic(estatsUsuario);
-                    System.out.println("opa");
                     final Call<List<UsuarioHasPergunta>> callQ = usuarioHasPergunta.getRespostasUsuario(2);
                     loadQtdPrguntas(callQ);
                 }else{
@@ -203,8 +196,7 @@ public class PerfilFragment extends Fragment {
 
                 if(code == 200){
                     List<UsuarioHasPergunta> estatsUsuario= response.body();
-                    System.out.println("s " + estatsUsuario.size());
-                    qtdPerguntas.setText(estatsUsuario.size() + " " + getString(R.string.qtd_perguntas_t));
+                     qtdPerguntas.setText(estatsUsuario.size() + " " + getString(R.string.qtd_perguntas_t));
 
                 }else{
 

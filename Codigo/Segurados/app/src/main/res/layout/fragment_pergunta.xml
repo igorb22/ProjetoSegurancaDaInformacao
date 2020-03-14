@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:padding="10pt"
+    android:background="#e0e0e0"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".view.ui.jogar.PerguntaFragment"
+    android:layout_marginBottom="15pt">
+
+    <android.support.v7.widget.CardView
+        android:padding="20pt"
+        android:layout_gravity="center"
+        android:elevation="10pt"
+        android:id="@+id/mycard_pg"
+        android:visibility="gone"
+        app:cardCornerRadius="10pt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+
+            <ProgressBar
+                android:visibility="gone"
+                android:layout_marginTop="10pt"
+                android:layout_marginBottom="10pt"
+                android:id="@+id/progress_pg"
+                android:layout_gravity="center"
+                android:layout_width="40pt"
+                android:layout_height="40pt"
+                android:tooltipText="OLa mundo" />
+
+
+            <LinearLayout
+                android:id="@+id/linear"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/txt_log_resposta_pg"
+                    android:textAlignment="center"
+                    android:textSize="10pt"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Resposta Correta!"/>
+
+                <ImageView
+                    android:id="@+id/img_resposta"
+                    android:layout_gravity="center"
+                    android:layout_width="40pt"
+                    android:layout_height="40pt"
+                    android:src="@drawable/certo"/>
+
+
+                <TextView
+                    android:id="@+id/txt_pontuacao_obtida"
+                    android:textSize="10pt"
+                    android:layout_width="match_parent"
+                    android:textAlignment="center"
+                    android:layout_height="wrap_content"
+                    android:text="Pontuacao: 0"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:background="@android:color/holo_red_light"
+                        android:id="@+id/btn_finalizar_pg"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:text="Finalizar" />
+
+                    <Button
+                        android:id="@+id/btn_continuar_pg"
+                        android:background="@android:color/holo_green_light"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:layout_weight="1"
+                        android:text="Continuar" />
+                </LinearLayout>
+            </LinearLayout>
+        </FrameLayout>
+    </android.support.v7.widget.CardView>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <FrameLayout
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <com.github.lzyzsd.circleprogress.DonutProgress
+                android:id="@+id/donut_progress_pg"
+                android:layout_width="70dp"
+                android:layout_height="70dp"
+                android:layout_gravity="bottom" />
+        </FrameLayout>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="wrap_content"
+            android:layout_gravity="center"
+            android:elevation="5pt"
+            android:layout_marginBottom="5pt"
+            app:cardCornerRadius="5pt"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/txt_pergunta_pg"
+                android:background="#512DA8"
+                android:textSize="20dp"
+                android:textAlignment="center"
+                android:padding="5pt"
+                android:textColor="#ffff"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ola mundo ?"/>
+        </android.support.v7.widget.CardView>
+
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rcv_opcao_pg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:foregroundGravity="center"
+            tools:ignore="MissingConstraints"/>
+
+    </LinearLayout>
+
+</FrameLayout>

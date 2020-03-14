@@ -1,4 +1,4 @@
-﻿using SeguradosAPI.Models;
+﻿ using SeguradosAPI.Models;
 using System.Collections.Generic;
 
 namespace SeguradosAPI.Services

@@ -15,7 +15,8 @@
     <string name="pontos_jogador">Pontos do Jogador</string>
     <string name="qtd_questoes">Qtd de questões</string>
     <string name="posicao_jogador">1</string>
-    <string name="qtd_perguntas_t">RESPONDIDAS</string>
+    <string name="qtd_perguntas_t">quests Respondidas</string>
     <string name="pontoss">pts</string>
+    <string name="girar">girar</string>
 
 </resources>
