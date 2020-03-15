@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,6 +71,11 @@ public class JogarFragment extends Fragment implements SpinningWheelView.OnRotat
     @Override
     public void onStopRotation(String item) {
         Toast.makeText(getActivity(), item, Toast.LENGTH_LONG).show();
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        PerguntaFragment perguntaFragment = new PerguntaFragment();
+        ft.replace(R.id.containerFragment, perguntaFragment);
+        ft.commit();
     }
 
     private void loadDataTematic(Call<List<Tematica>> call){

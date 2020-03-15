@@ -18,5 +18,10 @@
     <string name="qtd_perguntas_t">quests Respondidas</string>
     <string name="pontoss">pts</string>
     <string name="girar">girar</string>
+    <string name="resposta_correta">Resposta Correta!</string>
+    <string name="pontuacao">Pontuacao: 0</string>
+    <string name="finalizar">Finalizar</string>
+    <string name="continuar">Continuar</string>
+    <string name="pergunta">Pergunta ?</string>
 
 </resources>

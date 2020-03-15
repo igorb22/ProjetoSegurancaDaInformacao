@@ -129,7 +129,7 @@ public class PerfilFragment extends Fragment {
                 if(code == 200){
                     Usuario usuario = response.body();
                     txtNomeUsuario.setText(usuario.getNome());
-                    Glide.with(Objects.requireNonNull(getActivity()))
+                     Glide.with(Objects.requireNonNull(getActivity()))
                             .load(usuario.getPerfil())
                             .listener(new RequestListener<Drawable>() {
                                 @Override
