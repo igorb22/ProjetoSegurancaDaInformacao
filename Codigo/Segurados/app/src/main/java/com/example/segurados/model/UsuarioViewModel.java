@@ -1,33 +1,39 @@
 package com.example.segurados.model;
 
 import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-public class Usuario{
+public class UsuarioViewModel extends RealmObject {
+    @PrimaryKey
     private int idUsuario;
     private String nome;
-    private String email;
-    private String senha;
     private String perfil;
+    private String email;
+    private String token;
 
 
+    public UsuarioViewModel(){}
 
-    public Usuario(){}
-
-    public Usuario(int idUsuario, String nome, String email, String perfil,
-                   String senha) {
+    public UsuarioViewModel(int idUsuario, String nome, String email, String perfil,
+                   String token) {
         this.idUsuario = idUsuario;
         this.nome = nome;
         this.email = email;
         this.perfil = perfil;
-        this.senha = senha;
+        this.token = token;
+    }
+
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
     }
 
     public String getSenha() {
-        return senha;
-    }
-
-    public void setSenha(String senha) {
-        this.senha = senha;
+        return token;
     }
 
     public void setIdUsuario(int idUsuario) {
@@ -64,12 +70,6 @@ public class Usuario{
 
     @Override
     public String toString() {
-        return ("{ \n" +
-                "\"idUsuario\": " +idUsuario+", \n"+
-                "\"nome\": \"" +nome + "\",\n" +
-                "\"email\": \"" +email+"\", \n" +
-                "\"senha\": \"" +senha+"\", \n" +
-                "\"perfil\": \"" +perfil+"\" \n"+
-                "}");
+        return (nome + " - " + email);
     }
 }

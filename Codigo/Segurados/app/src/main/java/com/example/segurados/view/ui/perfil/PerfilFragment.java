@@ -14,6 +14,8 @@ import android.widget.Toast;
 import com.example.segurados.R;
 import com.example.segurados.model.Pergunta;
 import com.example.segurados.model.Usuario;
+import com.example.segurados.model.UsuarioViewModel;
+import com.example.segurados.service.AuthenticateService;
 import com.example.segurados.service.PerguntaService;
 import com.example.segurados.service.UsuarioService;
 
@@ -46,42 +48,7 @@ public class PerfilFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                /*
-                PerguntaService pergunta = PerguntaService.retrofit.create(PerguntaService.class);
-                final Call<Pergunta> call = pergunta.getPergunta(1);
 
-
-                call.enqueue(new Callback<Pergunta>() {
-                    @Override
-                    public void onResponse(Call<Pergunta> call, Response<Pergunta> response) {
-                        int code = response.code();
-
-                        if(code == 200){
-                            Pergunta usuarios = response.body();
-
-                            Toast.makeText(getContext(),"NOME: "+usuarios.getAlternativa1()
-                                            +"EMAIL: "+usuarios.getAlternativa2()
-                                            +"ID: "+usuarios.getAlternativa3()
-                                            +"PERFIL: "+usuarios.getAlternativa4(),
-                                    Toast.LENGTH_LONG).show();
-
-                        }else{
-
-                            Toast.makeText(getContext(),"Falhou",
-                                    Toast.LENGTH_LONG).show();
-                        }
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<Pergunta> call, Throwable t) {
-
-                    }
-
-
-                });
-
-                 */
             }
         });
 
