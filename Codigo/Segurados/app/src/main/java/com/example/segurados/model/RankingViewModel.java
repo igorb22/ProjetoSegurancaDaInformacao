@@ -1,7 +1,5 @@
 package com.example.segurados.model;
 
-import com.google.gson.annotations.SerializedName;
-
 public class RankingViewModel {
     private String nomeUsuario;
     private int pontos;

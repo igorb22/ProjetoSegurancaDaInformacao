@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using SeguradosAPI.Models;
 using SeguradosAPI.Services;
 
@@ -6,6 +7,7 @@ namespace SeguradosAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize()]
     public class UsuarioHasPerguntaController : ControllerBase
     {
         private readonly IUsuarioHasPerguntaService _service;

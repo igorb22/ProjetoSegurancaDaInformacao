@@ -1,33 +1,75 @@
 package com.example.segurados.model;
 
-import com.google.gson.annotations.SerializedName;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
 
-import java.util.HashMap;
+public class UsuarioViewModel extends RealmObject {
+    @PrimaryKey
+    private int idUsuario;
+    private String nome;
+    private String perfil;
+    private String email;
+    private String token;
 
-public class UsuarioViewModel {
-    @SerializedName("pontos")
-    private int pontos;
-    @SerializedName("tematicaModel")
-    private Tematica tematica;
 
-    public UsuarioViewModel(int pontos, Tematica tematica) {
-        this.tematica = tematica;
-        this.pontos = pontos;
+    public UsuarioViewModel(){}
+
+    public UsuarioViewModel(int idUsuario, String nome, String email, String perfil,
+                   String token) {
+        this.idUsuario = idUsuario;
+        this.nome = nome;
+        this.email = email;
+        this.perfil = perfil;
+        this.token = token;
     }
 
-    public Tematica getTematica() {
-        return tematica;
+
+    public String getToken() {
+        return token;
     }
 
-    public void setTematica(Tematica tematica) {
-        this.tematica = tematica;
+    public void setToken(String token) {
+        this.token = token;
     }
 
-    public int getPontos() {
-        return pontos;
+    public String getSenha() {
+        return token;
     }
 
-    public void setPontos(int pontos) {
-        this.pontos = pontos;
+    public void setIdUsuario(int idUsuario) {
+        this.idUsuario = idUsuario;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPerfil(String perfil) {
+        this.perfil = perfil;
+    }
+
+    public int getIdUsuario() {
+        return idUsuario;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getPerfil() {
+        return perfil;
+    }
+
+    @Override
+    public String toString() {
+        return (nome + " - " + email);
     }
 }

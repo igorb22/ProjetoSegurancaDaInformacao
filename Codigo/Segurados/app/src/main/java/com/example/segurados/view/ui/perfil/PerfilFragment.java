@@ -5,10 +5,6 @@ import android.annotation.SuppressLint;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,15 +12,18 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DataSource;
 import com.bumptech.glide.load.engine.GlideException;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
 import com.example.segurados.R;
+import com.example.segurados.model.PontosUsuarioViewModel;
 import com.example.segurados.model.Usuario;
 import com.example.segurados.model.UsuarioHasPergunta;
-import com.example.segurados.model.UsuarioViewModel;
 import com.example.segurados.service.UsuarioEstatisticaService;
 import com.example.segurados.service.UsuarioHasPerguntaService;
 import com.example.segurados.service.UsuarioService;
@@ -85,7 +84,7 @@ public class PerfilFragment extends Fragment {
         usuarioEstatisticaService = UsuarioEstatisticaService.retrofit.create(UsuarioEstatisticaService.class);
         usuarioHasPergunta = UsuarioHasPerguntaService.retrofit.create(UsuarioHasPerguntaService.class);
 
-        final Call<Usuario> call = usuarioService.getUsuario(2);
+        final Call<Usuario> call = usuarioService.getUsuario(2, "");
         loadDataProfile(call);
 
         btnEditar.setOnClickListener(new View.OnClickListener() {
@@ -97,10 +96,10 @@ public class PerfilFragment extends Fragment {
         return v;
     }
        @SuppressLint("SetTextI18n")
-       private void setGraphic(List<UsuarioViewModel> estats) {
+       private void setGraphic(List<PontosUsuarioViewModel> estats) {
         pieEntries = new ArrayList<>();
         int pontos = 0;
-        for(UsuarioViewModel us : estats){
+        for(PontosUsuarioViewModel us : estats){
             pieEntries.add(new PieEntry(us.getPontos(), us.getTematica().getTitulo()));
             pontos += us.getPontos();
         }
@@ -143,7 +142,7 @@ public class PerfilFragment extends Fragment {
                                 }
                             })
                             .into(imgPerfil);      //classe que pega a foto da url e seta o imageView
-                    final Call<List<UsuarioViewModel>> callEst = usuarioEstatisticaService.getEstatistica(2);
+                    final Call<List<PontosUsuarioViewModel>> callEst = usuarioEstatisticaService.getEstatistica(2);
                     loadEstsProfile(callEst);
 
                 }else{
@@ -151,7 +150,6 @@ public class PerfilFragment extends Fragment {
                     Toast.makeText(getContext(),"Falhou",
                             Toast.LENGTH_LONG).show();
                 }
-
             }
 
             @Override
@@ -161,14 +159,14 @@ public class PerfilFragment extends Fragment {
         });
     }
 
-    private void loadEstsProfile(Call<List<UsuarioViewModel>> call){
-        call.enqueue(new Callback<List<UsuarioViewModel>>() {
+    private void loadEstsProfile(Call<List<PontosUsuarioViewModel>> call){
+        call.enqueue(new Callback<List<PontosUsuarioViewModel>>() {
             @Override
-            public void onResponse(Call<List<UsuarioViewModel>> call, Response<List<UsuarioViewModel>> response) {
+            public void onResponse(Call<List<PontosUsuarioViewModel>> call, Response<List<PontosUsuarioViewModel>> response) {
                 int code = response.code();
 
                 if(code == 200){
-                    List<UsuarioViewModel> estatsUsuario = response.body();
+                    List<PontosUsuarioViewModel> estatsUsuario = response.body();
                     setGraphic(estatsUsuario);
                     final Call<List<UsuarioHasPergunta>> callQ = usuarioHasPergunta.getRespostasUsuario(2);
                     loadQtdPrguntas(callQ);
@@ -181,7 +179,7 @@ public class PerfilFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<UsuarioViewModel>> call, Throwable t) {
+            public void onFailure(Call<List<PontosUsuarioViewModel>> call, Throwable t) {
 
             }
         });

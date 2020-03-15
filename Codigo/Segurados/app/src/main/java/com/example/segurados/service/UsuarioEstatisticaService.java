@@ -1,8 +1,8 @@
 package com.example.segurados.service;
 
 import com.example.segurados.constant.Constant;
+import com.example.segurados.model.PontosUsuarioViewModel;
 import com.example.segurados.model.RankingViewModel;
-import com.example.segurados.model.UsuarioViewModel;
 
 import java.util.List;
 
@@ -15,7 +15,7 @@ import retrofit2.http.Path;
 public interface UsuarioEstatisticaService {
 
     @GET("estatistica/{idUsuario}")
-    Call<List<UsuarioViewModel>> getEstatistica(@Path("idUsuario") int idUsuario);
+    Call<List<PontosUsuarioViewModel>> getEstatistica(@Path("idUsuario") int idUsuario);
 
     @GET("estatistica")
     Call<List<RankingViewModel>> getRanking();
