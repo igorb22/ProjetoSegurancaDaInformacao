@@ -2,7 +2,11 @@ package com.example.segurados.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class UsuarioHasPergunta {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class UsuarioHasPergunta extends RealmObject {
+    @PrimaryKey
     @SerializedName("idPergunta")
     private int idPergunta;
     @SerializedName("idJogador")
@@ -10,6 +14,9 @@ public class UsuarioHasPergunta {
     @SerializedName("acertou")
     private int acertou;
 
+    public UsuarioHasPergunta(){
+
+    }
     public UsuarioHasPergunta(int idPergunta, int idUsuario, int acertou) {
         this.idPergunta = idPergunta;
         this.idUsuario = idUsuario;

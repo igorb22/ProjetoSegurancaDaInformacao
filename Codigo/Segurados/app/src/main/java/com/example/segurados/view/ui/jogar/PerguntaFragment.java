@@ -24,6 +24,13 @@ import com.example.segurados.R;
 import com.example.segurados.adapter.OpcaoAdapter;
 import com.example.segurados.model.Opcao;
 import com.example.segurados.model.Pergunta;
+import com.example.segurados.model.PontosUsuarioViewModel;
+import com.example.segurados.model.RankingViewModel;
+import com.example.segurados.model.Tematica;
+import com.example.segurados.model.UsuarioHasPergunta;
+import com.example.segurados.model.UsuarioViewModel;
+import com.example.segurados.service.UsuarioHasPerguntaService;
+import com.example.segurados.view.ui.perfil.PerfilFragment;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 
 import java.util.ArrayList;
@@ -31,6 +38,9 @@ import java.util.List;
 import java.util.Objects;
 
 import io.realm.Realm;
+import io.realm.RealmQuery;
+import retrofit2.Call;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,6 +55,7 @@ public class PerguntaFragment extends Fragment {
     private ImageView imgResposta;
     private Button btnContinuar;
     private Button btnFinalizar;
+    private Pergunta pergunta;
     // detalhe de interface
     private LinearLayout linearLayout;
     private int tempo;
@@ -53,8 +64,7 @@ public class PerguntaFragment extends Fragment {
     private ProgressBar progressBar;
     private int verificaProgress;
     private ArrayList<Opcao> opcoes;
-    private List<Pergunta> perguntaList;
-
+    private UsuarioViewModel user;
     public PerguntaFragment() {
         // Required empty public constructor
     }
@@ -66,11 +76,20 @@ public class PerguntaFragment extends Fragment {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_pergunta, container, false);
         Realm realm = Realm.getDefaultInstance();
-        perguntaList = realm.where(Pergunta.class).findAll();
+
+        user = realm.where(UsuarioViewModel.class).findAll().first();
+
+        int key = -1;
+        if((this.getArguments() != null))
+           key = this.getArguments().getInt("idPergunta");
+
+        if(key != -1){
+          pergunta = realm.where(Pergunta.class).equalTo("idPergunta", key).findFirst();
+       }
 
       txtPergunta = v.findViewById(R.id.txt_pergunta_pg);
       // ----------------------------------------------------------------------
-      if (perguntaList.size() > 0) {
+      if (pergunta != null) {
         // referencia dos itens do carView
         cardView = v.findViewById(R.id.mycard_pg);
         txtPontos = v.findViewById(R.id.txt_pontuacao_obtida_pg);
@@ -89,15 +108,15 @@ public class PerguntaFragment extends Fragment {
 
         // ------------------------------------------------------------------
         opcoes = new ArrayList<>();
-        txtPergunta.setText(perguntaList.get(0).getQuestao());
+        txtPergunta.setText(pergunta.getQuestao());
 
-        Opcao op = new Opcao(perguntaList.get(0).getAlternativa1());
+        Opcao op = new Opcao(pergunta.getAlternativa1());
         opcoes.add(op);
-        op = new Opcao(perguntaList.get(0).getAlternativa2());
+        op = new Opcao(pergunta.getAlternativa2());
         opcoes.add(op);
-        op = new Opcao(perguntaList.get(0).getAlternativa3());
+        op = new Opcao(pergunta.getAlternativa3());
         opcoes.add(op);
-        op = new Opcao(perguntaList.get(0).getAlternativa4());
+        op = new Opcao(pergunta.getAlternativa4());
         opcoes.add(op);
         // ---------------------------------------------------------------------
         //circle progress
@@ -116,8 +135,8 @@ public class PerguntaFragment extends Fragment {
         mRecyclerView.setAdapter(opcaoAdapter);
 
         // -----------------------------------------------------------------------
-        progressStatus =  perguntaList.get(0).getTempo();
-        int tmax  = perguntaList.get(0).getTempo();
+        progressStatus =  pergunta.getTempo();
+        int tmax  = pergunta.getTempo();
         donutProgress.setMax(tmax);
         // ProgressBar que conta o tempo de resposta do usuário
         Handler handler = new Handler();
@@ -143,22 +162,44 @@ public class PerguntaFragment extends Fragment {
             }
           }
         }).start();
+
+        UsuarioHasPergunta hP = new UsuarioHasPergunta();
         // -----------------------------------------------------------------------------
         opcaoAdapter.setOnItemClickListener(position -> {
           tempo = progressStatus;
           progressStatus = 0;
           if (tempo > 0) {
             // verificando se a opcao escolhida foi a correta
-            if (position == perguntaList.get(0).getOpcaoCorreta()-1) {
+            if (position  == pergunta.getOpcaoCorreta() -1) {
               menuOpcao(0);
              /* gravaResposta();  aqui o momento em que eu gravo a resposta,
                * quando o usuário clica, mas só grava se a resposta for correta */
+              realm.beginTransaction();
+              PontosUsuarioViewModel pvm = realm.createObject(PontosUsuarioViewModel.class, PontosUsuarioViewModel.autoIncrementId());
+              pvm.setPontos(pergunta.getPontuacao());
+              Tematica tema = realm.where(Tematica.class).equalTo("idTematica", pergunta.getTematicaIdTematica()).findFirst();
+              pvm.setTematica(tema);
+           //   RankingViewModel rk =  realm.where(RankingViewModel.class).equalTo("idTematica", pergunta.getTematicaIdTematica()).findFirst();
+              realm.commitTransaction();
+              hP.setAcertou(1);
             }else
               menuOpcao(1); /* resposta errada */
+             hP.setAcertou(0);
+
           }else
-            menuOpcao(2); /* tempo esgotado */
+            hP.setAcertou(0);
+
+          menuOpcao(2); /* tempo esgotado */
         });
         // -------------------------------------------------------------------------------
+        realm.beginTransaction();
+        hP.setIdPergunta(user.getIdUsuario());
+        hP.setIdUsuario(user.getIdUsuario());
+        user.setQtdQuestoes(user.getQtdQuestoes() + 1);
+        realm.insertOrUpdate(user);
+        realm.copyToRealmOrUpdate(hP);
+        realm.commitTransaction();
+        realm.close();
         btnContinuar.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
@@ -166,16 +207,16 @@ public class PerguntaFragment extends Fragment {
             progressBar.setVisibility(View.VISIBLE);
             try {
               Thread.sleep(1000);
+
             } catch (InterruptedException e) {
               e.printStackTrace();
             }
             // ------------------------------------------------------------------
             // removendo o primeiro elemento do array, assim sempre podemos selecionar a pergunta de indice 0
-         //   perguntas.remove(0);
-            // reiniciando fragment
+            // Ir pra roleta de novo
             FragmentManager fm = getActivity().getSupportFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.containerFragment, new PerguntaFragment()).commit();
+            ft.replace(R.id.containerFragment, new JogarFragment()).commit();
 
           }
         });
@@ -194,7 +235,9 @@ public class PerguntaFragment extends Fragment {
               e.printStackTrace();
             }
             // ------------------------------------------------------------------
-          //  comunicador.fimJogo(true);
+            FragmentManager fm = getActivity().getSupportFragmentManager();
+            FragmentTransaction ft = fm.beginTransaction();
+            ft.replace(R.id.containerFragment, new PerfilFragment()).commit();
           }
         });
         // -------------------------------------------------------------------------------

@@ -2,13 +2,20 @@ package com.example.segurados.model;
 
 import com.google.gson.annotations.SerializedName;
 
-public class Tematica {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class Tematica extends RealmObject {
+    @PrimaryKey
     @SerializedName("idTematica")
     private int idTematica;
     @SerializedName("titulo")
     private String titulo;
     @SerializedName("descricao")
     private String descricao;
+
+    public Tematica() {
+    }
 
     public Tematica(int idTematica, String titulo, String descricao) {
         this.idTematica = idTematica;

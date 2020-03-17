@@ -10,6 +10,7 @@ import retrofit2.Callback;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.Part;
@@ -22,7 +23,7 @@ public interface TematicaService {
 
 
     @GET("tematica")
-    Call<List<Tematica>> getTematicas();
+    Call<List<Tematica>> getTematicas(@Header("Authorization") String token);
 
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(Constant.BASE_URL)

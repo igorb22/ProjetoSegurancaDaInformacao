@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SeguradosAPI.Models;
@@ -16,6 +17,7 @@ namespace SeguradosAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize()]
     public class EstatisticaController : ControllerBase
     {
         private readonly IUsuarioService _usuarioService;

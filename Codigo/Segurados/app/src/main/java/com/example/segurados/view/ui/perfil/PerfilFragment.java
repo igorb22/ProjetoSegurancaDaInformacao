@@ -24,6 +24,7 @@ import com.example.segurados.R;
 import com.example.segurados.model.PontosUsuarioViewModel;
 import com.example.segurados.model.Usuario;
 import com.example.segurados.model.UsuarioHasPergunta;
+import com.example.segurados.model.UsuarioViewModel;
 import com.example.segurados.service.UsuarioEstatisticaService;
 import com.example.segurados.service.UsuarioHasPerguntaService;
 import com.example.segurados.service.UsuarioService;
@@ -38,6 +39,9 @@ import java.util.List;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import io.realm.Realm;
+import io.realm.RealmQuery;
+import io.realm.RealmResults;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -46,8 +50,7 @@ import retrofit2.Response;
  * A simple {@link Fragment} subclass.
  */
 public class PerfilFragment extends Fragment {
-    private UsuarioService usuarioService;
-    private UsuarioEstatisticaService usuarioEstatisticaService;
+
     private UsuarioHasPerguntaService usuarioHasPergunta;
     private TextView txtNomeUsuario;
     private TextView pontosUsuario;
@@ -64,6 +67,7 @@ public class PerfilFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -76,27 +80,43 @@ public class PerfilFragment extends Fragment {
         qtdPerguntas = v.findViewById(R.id.qtd_questoes_p);
         imgPerfil = v.findViewById(R.id.img_perfil_p);
 
-        //----------------- Grafico Pizza ---------------------//
 
         //------------------ get data User --------------------//
+        Realm realm = Realm.getDefaultInstance();
+        RealmResults<UsuarioViewModel> usuario = realm.where(UsuarioViewModel.class).findAll();
+        System.out.println(usuario.first().toString());
+        txtNomeUsuario.setText(usuario.first().getNome());
+        qtdPerguntas.setText(usuario.first().getQtdQuestoes() + " " + getString(R.string.qtd_questoes));
+        Glide.with(getActivity())
+                .load(usuario.first().getPerfil())
+                .listener(new RequestListener<Drawable>() {
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        return false;
+                    }
 
-        usuarioService = UsuarioService.retrofit.create(UsuarioService.class);
-        usuarioEstatisticaService = UsuarioEstatisticaService.retrofit.create(UsuarioEstatisticaService.class);
-        usuarioHasPergunta = UsuarioHasPerguntaService.retrofit.create(UsuarioHasPerguntaService.class);
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        return false;
+                    }
+                })
+                .into(imgPerfil);      //classe que pega a foto da url e seta o imageView
+        // --------------------------------------------------------
+        RealmResults<PontosUsuarioViewModel> pU = realm.where(PontosUsuarioViewModel.class).findAll();
 
-        final Call<Usuario> call = usuarioService.getUsuario(2, "");
-        loadDataProfile(call);
+        setGraphic(pU);
 
         btnEditar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 //todo EDITAR PERFIL
+
             }
         });
         return v;
     }
        @SuppressLint("SetTextI18n")
-       private void setGraphic(List<PontosUsuarioViewModel> estats) {
+       private void setGraphic(RealmResults<PontosUsuarioViewModel> estats) {
         pieEntries = new ArrayList<>();
         int pontos = 0;
         for(PontosUsuarioViewModel us : estats){
@@ -106,7 +126,6 @@ public class PerfilFragment extends Fragment {
            pontosUsuario.setText(pontos + " " + getString(R.string.pontoss));
            pieDataSet = new PieDataSet(pieEntries, "");
            pieData = new PieData(pieDataSet);
-           //   dataSet.setValueFormatter(get);
            pieChart.setData(pieData);
            pieChart.setDrawCenterText(true);
            pieChart.setDrawHoleEnabled(false);
@@ -117,98 +136,4 @@ public class PerfilFragment extends Fragment {
            pieDataSet.setValueTextSize(10f);
            pieChart.invalidate();
        }
-
-
-    private void loadDataProfile(Call<Usuario> call){
-        call.enqueue(new Callback<Usuario>() {
-            @Override
-            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
-                int code = response.code();
-
-                if(code == 200){
-                    Usuario usuario = response.body();
-                    txtNomeUsuario.setText(usuario.getNome());
-                     Glide.with(Objects.requireNonNull(getActivity()))
-                            .load(usuario.getPerfil())
-                            .listener(new RequestListener<Drawable>() {
-                                @Override
-                                public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                                    return false;
-                                }
-
-                                @Override
-                                public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                                    return false;
-                                }
-                            })
-                            .into(imgPerfil);      //classe que pega a foto da url e seta o imageView
-                    final Call<List<PontosUsuarioViewModel>> callEst = usuarioEstatisticaService.getEstatistica(2);
-                    loadEstsProfile(callEst);
-
-                }else{
-
-                    Toast.makeText(getContext(),"Falhou",
-                            Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Usuario> call, Throwable t) {
-
-            }
-        });
-    }
-
-    private void loadEstsProfile(Call<List<PontosUsuarioViewModel>> call){
-        call.enqueue(new Callback<List<PontosUsuarioViewModel>>() {
-            @Override
-            public void onResponse(Call<List<PontosUsuarioViewModel>> call, Response<List<PontosUsuarioViewModel>> response) {
-                int code = response.code();
-
-                if(code == 200){
-                    List<PontosUsuarioViewModel> estatsUsuario = response.body();
-                    setGraphic(estatsUsuario);
-                    final Call<List<UsuarioHasPergunta>> callQ = usuarioHasPergunta.getRespostasUsuario(2);
-                    loadQtdPrguntas(callQ);
-                }else{
-
-                    Toast.makeText(getContext(),"Falhou",
-                            Toast.LENGTH_LONG).show();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<List<PontosUsuarioViewModel>> call, Throwable t) {
-
-            }
-        });
-    }
-
-    private void loadQtdPrguntas(Call<List<UsuarioHasPergunta>> call){
-        call.enqueue(new Callback<List<UsuarioHasPergunta>>() {
-            @SuppressLint("SetTextI18n")
-            @Override
-            public void onResponse(Call<List<UsuarioHasPergunta>> call, Response<List<UsuarioHasPergunta>> response) {
-                int code = response.code();
-
-                if(code == 200){
-                    List<UsuarioHasPergunta> estatsUsuario= response.body();
-                     qtdPerguntas.setText(estatsUsuario.size() + " " + getString(R.string.qtd_perguntas_t));
-
-                }else{
-
-                    Toast.makeText(getContext(),"Falhou",
-                            Toast.LENGTH_LONG).show();
-                }
-
-            }
-
-            @Override
-            public void onFailure(Call<List<UsuarioHasPergunta>> call, Throwable t) {
-                t.printStackTrace();
-            }
-        });
-    }
-
 }

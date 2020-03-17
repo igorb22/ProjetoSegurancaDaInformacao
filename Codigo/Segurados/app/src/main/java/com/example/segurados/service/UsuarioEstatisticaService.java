@@ -10,15 +10,16 @@ import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.GET;
+import retrofit2.http.Header;
 import retrofit2.http.Path;
 
 public interface UsuarioEstatisticaService {
 
     @GET("estatistica/{idUsuario}")
-    Call<List<PontosUsuarioViewModel>> getEstatistica(@Path("idUsuario") int idUsuario);
+    Call<List<PontosUsuarioViewModel>> getEstatistica(@Path("idUsuario") int idUsuario, @Header("Authorization") String token);
 
     @GET("estatistica")
-    Call<List<RankingViewModel>> getRanking();
+    Call<List<RankingViewModel>> getRanking(@Header("Authorization") String token);
 
 
     Retrofit retrofit = new Retrofit.Builder()

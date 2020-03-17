@@ -12,8 +12,8 @@ public class SeguradosApp extends Application {
         Realm.init(this);
 
         RealmConfiguration config = new RealmConfiguration.Builder()
-                //.name("segurados.realm")
-               // .schemaVersion(0)
+                .name("segurados.realm")
+                .schemaVersion(1)
                 .build();
         Realm.setDefaultConfiguration(config);
 

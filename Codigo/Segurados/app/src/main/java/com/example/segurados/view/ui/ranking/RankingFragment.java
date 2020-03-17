@@ -15,10 +15,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.segurados.R;
 import com.example.segurados.adapter.RankingAdapter;
 import com.example.segurados.model.RankingViewModel;
+import com.example.segurados.model.UsuarioViewModel;
 import com.example.segurados.service.UsuarioEstatisticaService;
 
 import java.util.List;
 
+import io.realm.Realm;
+import io.realm.RealmResults;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -31,6 +34,7 @@ public class RankingFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private ProgressBar pB;
     private UsuarioEstatisticaService usuarioEstatisticaService;
+    private Realm realm;
     public RankingFragment() {
         // Required empty public constructor
     }
@@ -48,7 +52,9 @@ public class RankingFragment extends Fragment {
         mRecyclerView.setLayoutManager(layoutManager);
         usuarioEstatisticaService = UsuarioEstatisticaService.retrofit.create(UsuarioEstatisticaService.class);
 
-        final Call<List<RankingViewModel>> call =  usuarioEstatisticaService.getRanking();
+        realm = Realm.getDefaultInstance();
+        RealmResults<UsuarioViewModel> user = realm.where(UsuarioViewModel.class).findAll();
+        final Call<List<RankingViewModel>> call =  usuarioEstatisticaService.getRanking("bearer " +  user.first().getToken());
         loadRanking(call);
         return v;
     }
