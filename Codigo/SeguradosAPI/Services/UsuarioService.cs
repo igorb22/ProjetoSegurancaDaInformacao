@@ -38,14 +38,14 @@ namespace SeguradosAPI.Services
             return false;
         }
 
-        public UsuarioModel ObterPorEmailSenha(string email, string senha)
+        public UsuarioModel ObterPorEmailSenha(string usuario, string senha)
          => _context
                 .Usuario
-                .Where(r => r.Email == email && r.Senha == senha)
+                .Where(r => r.Usuario1 == usuario && r.Senha == senha)
                 .Select(r => new UsuarioModel
                 {
                     IdUsuario = r.IdUsuario,
-                    Email = r.Email,
+                    Usuario = r.Usuario1,
                     Nome = r.Nome,
                     Perfil = r.Perfil,
                 }).FirstOrDefault();
@@ -57,7 +57,7 @@ namespace SeguradosAPI.Services
                 .Select(r => new UsuarioModel
                 {
                     IdUsuario = r.IdUsuario,
-                    Email = r.Email,
+                    Usuario = r.Usuario1,
                     Nome = r.Nome,
                     Perfil = r.Perfil,
                     Senha = r.Senha
@@ -69,7 +69,7 @@ namespace SeguradosAPI.Services
                 .Select(r => new UsuarioModel
                 {
                     IdUsuario = r.IdUsuario,
-                    Email = r.Email,
+                    Usuario = r.Usuario1,
                     Nome = r.Nome,
                     Perfil = r.Perfil,
                     Senha = r.Senha
@@ -92,7 +92,7 @@ namespace SeguradosAPI.Services
             entity.Nome = model.Nome;
             entity.Perfil = model.Perfil;
             entity.Senha = model.Senha;
-            entity.Email = model.Email;
+            entity.Usuario1 = model.Usuario;
 
             return entity;
         }

@@ -32,7 +32,7 @@ namespace SeguradosAPI.Controllers
         [Route("login")]
         public IActionResult RequestToken([FromBody] UsuarioModel model) {
 
-            var user = _service.ObterPorEmailSenha(model.Email, model.Senha);
+            var user = _service.ObterPorEmailSenha(model.Usuario, model.Senha);
             if (user != null) {
 
                 var claims = new[]
@@ -57,7 +57,7 @@ namespace SeguradosAPI.Controllers
                     user.IdUsuario,
                     user.Nome,
                     user.Perfil,
-                    user.Email,
+                    user.Usuario,
                     token = new JwtSecurityTokenHandler().WriteToken(token)
                 });
             }

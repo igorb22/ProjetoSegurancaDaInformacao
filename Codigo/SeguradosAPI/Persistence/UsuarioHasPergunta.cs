@@ -1,4 +1,7 @@
-﻿namespace SeguradosAPI.Persistence
+﻿using System;
+using System.Collections.Generic;
+
+namespace SeguradosAPI.Persistence
 {
     public partial class UsuarioHasPergunta
     {

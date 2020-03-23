@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace SeguradosAPI.Persistence
 {
@@ -18,15 +20,22 @@ namespace SeguradosAPI.Persistence
         public virtual DbSet<Usuario> Usuario { get; set; }
         public virtual DbSet<UsuarioHasPergunta> UsuarioHasPergunta { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) { }
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            if (!optionsBuilder.IsConfigured)
+            {
+#warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
+                optionsBuilder.UseMySQL("server=localhost;port=3306;user=root;password=123456;database=db");
+            }
+        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Pergunta>(entity =>
             {
-                entity.HasKey(e => new { e.IdPergunta, e.TematicaIdTematica });
+                entity.HasKey(e => e.IdPergunta);
 
-                entity.ToTable("Pergunta", "db_a560bd_italabs");
+                entity.ToTable("pergunta", "db");
 
                 entity.HasIndex(e => e.IdPergunta)
                     .HasName("idPergunta_UNIQUE")
@@ -37,11 +46,6 @@ namespace SeguradosAPI.Persistence
 
                 entity.Property(e => e.IdPergunta)
                     .HasColumnName("idPergunta")
-                    .HasColumnType("int(11)")
-                    .ValueGeneratedOnAdd();
-
-                entity.Property(e => e.TematicaIdTematica)
-                    .HasColumnName("Tematica_idTematica")
                     .HasColumnType("int(11)");
 
                 entity.Property(e => e.Alternativa1)
@@ -88,6 +92,10 @@ namespace SeguradosAPI.Persistence
                     .HasMaxLength(500)
                     .IsUnicode(false);
 
+                entity.Property(e => e.TematicaIdTematica)
+                    .HasColumnName("Tematica_idTematica")
+                    .HasColumnType("int(11)");
+
                 entity.Property(e => e.Tempo)
                     .IsRequired()
                     .HasColumnName("tempo")
@@ -104,7 +112,7 @@ namespace SeguradosAPI.Persistence
             {
                 entity.HasKey(e => e.IdTematica);
 
-                entity.ToTable("Tematica", "db_a560bd_italabs");
+                entity.ToTable("tematica", "db");
 
                 entity.Property(e => e.IdTematica)
                     .HasColumnName("idTematica")
@@ -126,7 +134,7 @@ namespace SeguradosAPI.Persistence
             {
                 entity.HasKey(e => e.IdUsuario);
 
-                entity.ToTable("Usuario", "db_a560bd_italabs");
+                entity.ToTable("usuario", "db");
 
                 entity.HasIndex(e => e.IdUsuario)
                     .HasName("idUsuario_UNIQUE")
@@ -135,12 +143,6 @@ namespace SeguradosAPI.Persistence
                 entity.Property(e => e.IdUsuario)
                     .HasColumnName("idUsuario")
                     .HasColumnType("int(11)");
-
-                entity.Property(e => e.Email)
-                    .IsRequired()
-                    .HasColumnName("email")
-                    .HasMaxLength(100)
-                    .IsUnicode(false);
 
                 entity.Property(e => e.Nome)
                     .IsRequired()
@@ -159,13 +161,19 @@ namespace SeguradosAPI.Persistence
                     .HasColumnName("senha")
                     .HasMaxLength(16)
                     .IsUnicode(false);
+
+                entity.Property(e => e.Usuario1)
+                    .IsRequired()
+                    .HasColumnName("usuario")
+                    .HasMaxLength(100)
+                    .IsUnicode(false);
             });
 
             modelBuilder.Entity<UsuarioHasPergunta>(entity =>
             {
                 entity.HasKey(e => new { e.IdUsuario, e.IdPergunta });
 
-                entity.ToTable("Usuario_has_Pergunta", "db_a560bd_italabs");
+                entity.ToTable("usuario_has_pergunta", "db");
 
                 entity.HasIndex(e => e.IdPergunta)
                     .HasName("fk_Usuario_has_Pergunta_Pergunta1_idx");
@@ -187,7 +195,6 @@ namespace SeguradosAPI.Persistence
 
                 entity.HasOne(d => d.IdPerguntaNavigation)
                     .WithMany(p => p.UsuarioHasPergunta)
-                    .HasPrincipalKey(p => p.IdPergunta)
                     .HasForeignKey(d => d.IdPergunta)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("fk_Usuario_has_Pergunta_Pergunta1");
