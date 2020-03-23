@@ -22,11 +22,11 @@ namespace SeguradosAPI.Persistence
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            if (!optionsBuilder.IsConfigured)
+          /*  if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
                 optionsBuilder.UseMySQL("server=localhost;port=3306;user=root;password=123456;database=db");
-            }
+            } */
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -35,7 +35,7 @@ namespace SeguradosAPI.Persistence
             {
                 entity.HasKey(e => e.IdPergunta);
 
-                entity.ToTable("pergunta", "db");
+                entity.ToTable("pergunta", "db_a560bd_italabs");
 
                 entity.HasIndex(e => e.IdPergunta)
                     .HasName("idPergunta_UNIQUE")
@@ -112,7 +112,7 @@ namespace SeguradosAPI.Persistence
             {
                 entity.HasKey(e => e.IdTematica);
 
-                entity.ToTable("tematica", "db");
+                entity.ToTable("tematica", "db_a560bd_italabs");
 
                 entity.Property(e => e.IdTematica)
                     .HasColumnName("idTematica")
@@ -134,7 +134,7 @@ namespace SeguradosAPI.Persistence
             {
                 entity.HasKey(e => e.IdUsuario);
 
-                entity.ToTable("usuario", "db");
+                entity.ToTable("usuario", "db_a560bd_italabs");
 
                 entity.HasIndex(e => e.IdUsuario)
                     .HasName("idUsuario_UNIQUE")
@@ -173,7 +173,7 @@ namespace SeguradosAPI.Persistence
             {
                 entity.HasKey(e => new { e.IdUsuario, e.IdPergunta });
 
-                entity.ToTable("usuario_has_pergunta", "db");
+                entity.ToTable("usuario_has_pergunta", "db_a560bd_italabs");
 
                 entity.HasIndex(e => e.IdPergunta)
                     .HasName("fk_Usuario_has_Pergunta_Pergunta1_idx");
