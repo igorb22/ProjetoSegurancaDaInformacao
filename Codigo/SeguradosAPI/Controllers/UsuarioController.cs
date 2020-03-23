@@ -15,6 +15,7 @@ namespace SeguradosAPI.Controllers
         {
             _service = service;
         }
+
         // GET: api/Usuario
         [HttpGet]
         public IActionResult Get()

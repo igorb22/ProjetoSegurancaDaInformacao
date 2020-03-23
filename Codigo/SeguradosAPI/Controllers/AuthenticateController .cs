@@ -64,6 +64,23 @@ namespace SeguradosAPI.Controllers
 
             return BadRequest("Credenciais inválidas");
         }
-    
+
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("register")]
+        public IActionResult Register([FromBody] UsuarioModel model)
+        {
+
+            var user = _service.ObterPorEmail(model.Email);
+            if (user == null)
+            {
+                if (_service.Add(model))
+                    return Ok(model);
+            }
+
+            return BadRequest("Esse nome de usuário já está sendo utilizado.");
+        }
+
     }
 }
