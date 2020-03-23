@@ -69,64 +69,73 @@ public class LoginActivity extends AppCompatActivity implements Comunicador {
             public void onClick(View v) {
                 Usuario user = new Usuario(0,"Igor Bruno",edtEmail.getText().toString(),"olamunod.pbg",edtSenha.getText().toString());
 
-                AuthenticateService auth = AuthenticateService.retrofit.create(AuthenticateService.class);
-                final Call<UsuarioViewModel> call = auth.authenticate(user);
+
+                if (!user.getEmail().equals("") && !user.getSenha().equals("")) {
+
+                    AuthenticateService auth = AuthenticateService.retrofit.create(AuthenticateService.class);
+                    final Call<UsuarioViewModel> call = auth.authenticate(user);
 
 
-                final ProgressDialog dialog = new ProgressDialog(LoginActivity.this);
-                dialog.setMessage("Fazendo login...");
-                dialog.setCancelable(false);
-                dialog.show();
+                    final ProgressDialog dialog = new ProgressDialog(LoginActivity.this);
+                    dialog.setMessage("Fazendo login...");
+                    dialog.setCancelable(false);
+                    dialog.show();
 
-                call.enqueue(new Callback<UsuarioViewModel>() {
-                    @Override
-                    public void onResponse(Call<UsuarioViewModel> call, Response<UsuarioViewModel> response) {
+                    call.enqueue(new Callback<UsuarioViewModel>() {
+                        @Override
+                        public void onResponse(Call<UsuarioViewModel> call, Response<UsuarioViewModel> response) {
 
-                        if(dialog.isShowing())
-                            dialog.dismiss();
+                            if (dialog.isShowing())
+                                dialog.dismiss();
 
-                        int code = response.code();
+                            int code = response.code();
 
-                        if(code == 200){
+                            if (code == 200) {
 
-                            UsuarioViewModel usuarioViewModel = response.body();
-                            Toast.makeText(getBaseContext(),"TOKEN: "+usuarioViewModel.getToken(),
-                                    Toast.LENGTH_LONG).show();
+                                UsuarioViewModel usuarioViewModel = response.body();
+                                Toast.makeText(getBaseContext(), "TOKEN: " + usuarioViewModel.getToken(),
+                                        Toast.LENGTH_LONG).show();
 
-                            Realm realm = Realm.getDefaultInstance();
-                            realm.beginTransaction();
-                            realm.copyToRealm(usuarioViewModel);
-                            realm.commitTransaction();
-                            realm.close();
+                                Realm realm = Realm.getDefaultInstance();
+                                realm.beginTransaction();
+                                realm.copyToRealm(usuarioViewModel);
+                                realm.commitTransaction();
+                                realm.close();
 
-                            startActivity(new Intent(LoginActivity.this,MainActivity.class));
-                            finish();
+                                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                                finish();
 
-                        }else if(code == 400) {
+                            } else if (code == 400) {
 
-                            msgErro.setVisibility(View.VISIBLE);
+                                msgErro.setVisibility(View.VISIBLE);
+                            }
+
                         }
 
-                        Toast.makeText(getBaseContext(), "Falhou: " + code, Toast.LENGTH_LONG).show();
-                    }
+                        @Override
+                        public void onFailure(Call<UsuarioViewModel> call, Throwable t) {
 
-                    @Override
-                    public void onFailure(Call<UsuarioViewModel> call, Throwable t) {
-
-                        if(dialog.isShowing())
-                            dialog.dismiss();
+                            if (dialog.isShowing())
+                                dialog.dismiss();
 
 
-                        msgErro.setText("Algo de inesperado aconteceu. Verifique sua conexao e tente novamente. ");
-                        msgErro.setVisibility(View.VISIBLE);
+                            msgErro.setText("Algo inesperado aconteceu. Verifique sua conexao e tente novamente. ");
+                            msgErro.setVisibility(View.VISIBLE);
 
-                        Toast.makeText(getBaseContext(),t.getMessage(),
-                                Toast.LENGTH_LONG).show();
-                    }
-                });
+                            Toast.makeText(getBaseContext(), t.getMessage(),
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }else{
+                    msgErro.setText("Insira informações válidas.");
+                    msgErro.setVisibility(View.VISIBLE);
+                }
             }
         });
     }
+
+
+
 
     @Override
     public void layoutIsClosed(boolean status) {

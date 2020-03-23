@@ -11,5 +11,6 @@ namespace SeguradosAPI.Services
         List<UsuarioModel> ObterTodos();
         bool Remover(int id);
         UsuarioModel ObterPorEmailSenha(string email, string senha);
+        UsuarioModel ObterPorEmail(string email);
     }
 }
