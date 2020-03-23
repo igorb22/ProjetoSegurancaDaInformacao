@@ -1,7 +1,6 @@
 package com.example.segurados.view.ui.jogar;
 
 
-import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -24,15 +23,12 @@ import com.example.segurados.model.UsuarioHasPergunta;
 import com.example.segurados.model.UsuarioViewModel;
 import com.example.segurados.service.PerguntaService;
 import com.example.segurados.service.TematicaService;
-import com.example.segurados.view.LoginActivity;
-import com.example.segurados.view.MainActivity;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
-import io.realm.RealmQuery;
 import io.realm.RealmResults;
 import retrofit2.Call;
 import retrofit2.Callback;

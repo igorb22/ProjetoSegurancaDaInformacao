@@ -1,6 +1,6 @@
 package com.example.segurados.service;
 
-import com.example.segurados.constant.Constant;
+import com.example.segurados.util.Constant;
 import com.example.segurados.model.Tematica;
 
 import java.util.List;

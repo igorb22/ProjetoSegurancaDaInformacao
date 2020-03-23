@@ -25,22 +25,16 @@ import com.example.segurados.adapter.OpcaoAdapter;
 import com.example.segurados.model.Opcao;
 import com.example.segurados.model.Pergunta;
 import com.example.segurados.model.PontosUsuarioViewModel;
-import com.example.segurados.model.RankingViewModel;
 import com.example.segurados.model.Tematica;
 import com.example.segurados.model.UsuarioHasPergunta;
 import com.example.segurados.model.UsuarioViewModel;
-import com.example.segurados.service.UsuarioHasPerguntaService;
 import com.example.segurados.view.ui.perfil.PerfilFragment;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import io.realm.Realm;
-import io.realm.RealmQuery;
-import retrofit2.Call;
-import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.

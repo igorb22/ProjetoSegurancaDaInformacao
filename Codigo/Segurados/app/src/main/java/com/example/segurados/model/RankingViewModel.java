@@ -1,10 +1,19 @@
 package com.example.segurados.model;
 
-public class RankingViewModel {
+import io.realm.Realm;
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class RankingViewModel extends RealmObject {
+    @PrimaryKey
+    private int id;
     private String nomeUsuario;
     private int pontos;
     private String perfil;
 
+    public RankingViewModel(){
+
+    }
     public RankingViewModel(String nomeUsuario, int pontos, String perfil) {
         this.pontos = pontos;
         this.nomeUsuario = nomeUsuario;
@@ -33,5 +42,24 @@ public class RankingViewModel {
 
     public void setPerfil(String perfil) {
         this.perfil = perfil;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public static Long autoIncrementId(){
+        Long key = 1L;
+        Realm realm = Realm.getDefaultInstance();
+        try {
+            key = realm.where(RankingViewModel.class).max("id").longValue() + 1;
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return key;
     }
 }

@@ -17,6 +17,7 @@ import com.example.segurados.adapter.RankingAdapter;
 import com.example.segurados.model.RankingViewModel;
 import com.example.segurados.model.UsuarioViewModel;
 import com.example.segurados.service.UsuarioEstatisticaService;
+import com.example.segurados.util.Utils;
 
 import java.util.List;
 
@@ -34,6 +35,7 @@ public class RankingFragment extends Fragment {
     private RecyclerView mRecyclerView;
     private ProgressBar pB;
     private UsuarioEstatisticaService usuarioEstatisticaService;
+    List<RankingViewModel> ranking;
     private Realm realm;
     public RankingFragment() {
         // Required empty public constructor
@@ -55,7 +57,12 @@ public class RankingFragment extends Fragment {
         realm = Realm.getDefaultInstance();
         RealmResults<UsuarioViewModel> user = realm.where(UsuarioViewModel.class).findAll();
         final Call<List<RankingViewModel>> call =  usuarioEstatisticaService.getRanking("bearer " +  user.first().getToken());
-        loadRanking(call);
+        if(Utils.checkInternet(getActivity()))
+            loadRanking(call);
+        else{
+            ranking = realm.where(RankingViewModel.class).findAll();
+            setRanking(ranking);
+        }
         return v;
     }
 
@@ -66,11 +73,14 @@ public class RankingFragment extends Fragment {
                 int code = response.code();
 
                 if(code == 200){
-                    List<RankingViewModel> ranking = response.body();
+                    ranking = response.body();
                     System.out.println(response.body().get(0).getPerfil());
-                    rankingAdapter = new RankingAdapter(ranking, getActivity());
-                    mRecyclerView.setAdapter(rankingAdapter);
-                    pB.setVisibility(View.GONE);
+                    realm.beginTransaction();
+                    for(RankingViewModel r :ranking) {
+                        realm.copyToRealmOrUpdate(r);
+                    }
+                    realm.commitTransaction();
+                   setRanking(ranking);
                 }else{
 
                     Toast.makeText(getContext(),"Falhou",
@@ -84,6 +94,14 @@ public class RankingFragment extends Fragment {
 
             }
         });
+    }
+
+    public void setRanking(List<RankingViewModel> ranking){
+        rankingAdapter = new RankingAdapter(ranking, getActivity());
+        mRecyclerView.setAdapter(rankingAdapter);
+        pB.setVisibility(View.GONE);
+        if(ranking.size() == 0)
+            Toast.makeText(getActivity(), "Sem jogador para compor o ranking!!", Toast.LENGTH_LONG).show();
     }
 
 }
