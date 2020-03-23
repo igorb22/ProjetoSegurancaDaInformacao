@@ -38,7 +38,7 @@ namespace SeguradosAPI.Services
             return false;
         }
 
-        public UsuarioModel ObterPorEmailSenha(string usuario, string senha)
+        public UsuarioModel ObterPorUsuarioSenha(string usuario, string senha)
          => _context
                 .Usuario
                 .Where(r => r.Usuario1 == usuario && r.Senha == senha)
@@ -50,14 +50,14 @@ namespace SeguradosAPI.Services
                     Perfil = r.Perfil,
                 }).FirstOrDefault();
 
-        public UsuarioModel ObterPorEmail(string email)
+        public UsuarioModel ObterPorUsuario(string usuario)
          => _context
                 .Usuario
-                .Where(r => r.Email == email)
+                .Where(r => r.Usuario1 == usuario)
                 .Select(r => new UsuarioModel
                 {
                     IdUsuario = r.IdUsuario,
-                    Email = r.Email,
+                    Usuario = r.Usuario1,
                     Nome = r.Nome,
                     Perfil = r.Perfil,
                 }).FirstOrDefault();

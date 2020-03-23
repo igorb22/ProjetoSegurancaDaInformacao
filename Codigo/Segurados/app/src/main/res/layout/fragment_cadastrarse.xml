@@ -111,7 +111,7 @@
 
 
                     <AutoCompleteTextView
-                        android:id="@+id/edtEmail"
+                        android:id="@+id/edtUsuario"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="5pt"

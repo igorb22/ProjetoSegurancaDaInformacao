@@ -32,7 +32,7 @@ namespace SeguradosAPI.Controllers
         [Route("login")]
         public IActionResult RequestToken([FromBody] UsuarioModel model) {
 
-            var user = _service.ObterPorEmailSenha(model.Usuario, model.Senha);
+            var user = _service.ObterPorUsuarioSenha(model.Usuario, model.Senha);
             if (user != null) {
 
                 var claims = new[]
@@ -72,7 +72,7 @@ namespace SeguradosAPI.Controllers
         public IActionResult Register([FromBody] UsuarioModel model)
         {
 
-            var user = _service.ObterPorEmail(model.Email);
+            var user = _service.ObterPorUsuario(model.Usuario);
             if (user == null)
             {
                 if (_service.Add(model))

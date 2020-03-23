@@ -1,10 +1,7 @@
 package com.example.segurados.view.ui.CadastrarUsuario;
 
-
-import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.cardview.widget.CardView;
@@ -13,6 +10,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Handler;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -22,19 +20,13 @@ import android.view.ViewGroup;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
 import android.widget.ScrollView;
 import android.widget.TextView;
-
 import com.example.segurados.Interface.Comunicador;
 import com.example.segurados.R;
 import com.example.segurados.model.Usuario;
 import com.example.segurados.model.UsuarioViewModel;
 import com.example.segurados.service.AuthenticateService;
-import com.example.segurados.view.LoginActivity;
-import com.example.segurados.view.MainActivity;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -86,8 +78,8 @@ public class CadastrarseFragment extends Fragment {
         setHasOptionsMenu(true);
 
 
-        edtNome = v.findViewById(R.id.edtEmail);
-        edtUsuario = v.findViewById(R.id.edtEmail);
+        edtNome = v.findViewById(R.id.edtNome);
+        edtUsuario = v.findViewById(R.id.edtUsuario);
         edtSenha = v.findViewById(R.id.edtSenha);
         edtRepitaSenha = v.findViewById(R.id.edtRepitaSenha);
         btnCadastrar = v.findViewById(R.id.btnCadastrar);
@@ -101,15 +93,16 @@ public class CadastrarseFragment extends Fragment {
 
                 mostraDialog();
 
-                String senha1 = edtSenha.getText().toString();
-                String senha2 = edtRepitaSenha.getText().toString();
-                String nome = edtNome.getText().toString();
+                String senha1  = edtSenha.getText().toString();
+                String senha2  = edtRepitaSenha.getText().toString();
+                String nome    = edtNome.getText().toString();
                 String usuario = edtUsuario.getText().toString();
-                String perfil = "https://icons-for-free.com/iconfiles/png/512/headset+male+man+support+user+young+icon-1320196267025138334.png";
+                String perfil  = "https://icons-for-free.com/iconfiles/png/512/headset+male+man+support+user+young+icon-1320196267025138334.png";
 
                 if (!senha1.equals("") && !senha2.equals("") &&
                     !nome.equals("")   && !usuario.equals("") &&
-                    (usuario.length() >= 3) && (nome.length() >= 3) && (usuario.indexOf(" ") == -1)) {
+                    (usuario.length() >= 3) && (nome.length() >= 3) &&
+                     (usuario.indexOf(" ") == -1)) {
 
                         if (senha1.equals(senha2) && senha1.length() >= 8) {
 
@@ -132,12 +125,10 @@ public class CadastrarseFragment extends Fragment {
                                                 fechaCadastro();
                                             }
                                         }, 2000);
-
+                                        
                                     } else {
-
                                         escondeDialog();
                                         mostraMensagem("Esse nome de usuário já está sendo utilizado.");
-
                                     }
                                 }
 
