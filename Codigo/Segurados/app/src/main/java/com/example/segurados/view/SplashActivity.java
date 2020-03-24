@@ -2,7 +2,6 @@ package com.example.segurados.view;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -12,6 +11,7 @@ import com.example.segurados.R;
 import com.example.segurados.model.Usuario;
 import com.example.segurados.model.UsuarioViewModel;
 import com.example.segurados.service.UsuarioService;
+import com.example.segurados.util.Util;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -72,7 +72,7 @@ public class SplashActivity extends AppCompatActivity {
                             Toast.makeText(getBaseContext(), "Nao autorizado" + code,
                                     Toast.LENGTH_LONG).show();
 
-                            removeUser();
+                            Util.removeUser();
                             startActivity(new Intent(SplashActivity.this, LoginActivity.class));
                             finish();
                         }
@@ -100,18 +100,6 @@ public class SplashActivity extends AppCompatActivity {
             realm.close();
         }
 
-        public void removeUser() {
-            Realm realm = Realm.getDefaultInstance();
 
-            realm.beginTransaction();
-            RealmResults<UsuarioViewModel> user = realm.where(UsuarioViewModel.class).findAll();
-
-            user.deleteAllFromRealm();
-
-            realm.commitTransaction();
-
-
-            realm.close();
-        }
     }
 }

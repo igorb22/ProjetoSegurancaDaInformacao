@@ -28,13 +28,22 @@ import com.example.segurados.model.PontosUsuarioViewModel;
 import com.example.segurados.model.Tematica;
 import com.example.segurados.model.UsuarioHasPergunta;
 import com.example.segurados.model.UsuarioViewModel;
+import com.example.segurados.service.UsuarioHasPerguntaService;
+import com.example.segurados.util.Util;
 import com.example.segurados.view.ui.perfil.PerfilFragment;
 import com.github.lzyzsd.circleprogress.DonutProgress;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
 import io.realm.Realm;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -194,6 +203,20 @@ public class PerguntaFragment extends Fragment {
         realm.copyToRealmOrUpdate(hP);
         realm.commitTransaction();
         realm.close();
+        if(Util.checkInternet(getActivity())){
+          new Util.AddResposta(hP).start();
+        }
+        else{
+          File f = new File(getActivity().getFilesDir()+"/filaRespostas.txt");
+          try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(f, true));
+            bw.write(hP.getIdUsuario() + ";" + hP.getIdPergunta() + ";" + hP.isAcertou());
+            bw.newLine();
+            bw.close();
+          } catch (IOException e) {
+            e.printStackTrace();
+          }
+        }
         btnContinuar.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
@@ -261,6 +284,5 @@ public class PerguntaFragment extends Fragment {
       cardView.setVisibility(View.VISIBLE);
     }
   }
-
 
 }

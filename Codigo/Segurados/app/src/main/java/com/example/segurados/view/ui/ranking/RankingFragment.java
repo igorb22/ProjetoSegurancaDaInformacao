@@ -17,7 +17,7 @@ import com.example.segurados.adapter.RankingAdapter;
 import com.example.segurados.model.RankingViewModel;
 import com.example.segurados.model.UsuarioViewModel;
 import com.example.segurados.service.UsuarioEstatisticaService;
-import com.example.segurados.util.Utils;
+import com.example.segurados.util.Util;
 
 import java.util.List;
 
@@ -57,7 +57,7 @@ public class RankingFragment extends Fragment {
         realm = Realm.getDefaultInstance();
         RealmResults<UsuarioViewModel> user = realm.where(UsuarioViewModel.class).findAll();
         final Call<List<RankingViewModel>> call =  usuarioEstatisticaService.getRanking("bearer " +  user.first().getToken());
-        if(Utils.checkInternet(getActivity()))
+        if(Util.checkInternet(getActivity()))
             loadRanking(call);
         else{
             ranking = realm.where(RankingViewModel.class).findAll();
