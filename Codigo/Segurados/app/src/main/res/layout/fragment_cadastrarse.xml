@@ -1,121 +1,181 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:gravity="center"
+    android:orientation="vertical"
     android:padding="10pt"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.ui.CadastrarUsuario.CadastrarseFragment">
-
-    <ImageView
-        android:layout_width="70pt"
-        android:layout_height="70pt"
-        android:src="@mipmap/icone_"/>
-
-    <TextView
-        android:text="Segurados"
-        android:textSize="12pt"
-        android:textColor="@color/colorPrimary"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
-
-    <View
-        android:layout_width="70pt"
-        android:layout_height="1pt"
-        android:background="#808080"
-        android:layout_gravity="center"
-        android:layout_marginTop="2pt" />
-
-    <TextView
-        android:text="Cadastro"
-        android:textSize="12pt"
-        android:textColor="@color/colorPrimary"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="5pt"/>
-
 
 
     <androidx.cardview.widget.CardView
-        android:layout_marginTop="20pt"
-        android:elevation="10pt"
-        app:cardCornerRadius="5pt"
+        android:id="@+id/cardMensagem"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="gone"
+        android:elevation="30pt">
 
         <LinearLayout
-            android:padding="10pt"
-            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="vertical"
+            android:padding="2pt">
 
-            <AutoCompleteTextView
-                android:layout_marginTop="5pt"
-                android:id="@+id/edtNome"
+
+                <ImageView
+                    android:id="@+id/imgOk"
+                    android:layout_width="60pt"
+                    android:layout_height="60pt"
+                    android:src="@drawable/ic_ok"
+                    />
+
+            <TextView
+                android:id="@+id/txtMensagem"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:hint="@string/prompt_name"
-                android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:singleLine="true" />
-
-
-            <AutoCompleteTextView
-                android:layout_marginTop="5pt"
-                android:id="@+id/edtEmail"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/prompt_email"
-                android:inputType="textEmailAddress"
-                android:maxLines="1"
-                android:singleLine="true" />
-
-
-            <EditText
-                android:layout_marginTop="5pt"
-                android:id="@+id/edtSenha"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/prompt_password"
-                android:imeActionId="6"
-                android:imeActionLabel="@string/action_sign_in_short"
-                android:imeOptions="actionUnspecified"
-                android:inputType="textPassword"
-                android:maxLines="1"
-                android:singleLine="true" />
-
-            <EditText
-                android:layout_marginTop="5pt"
-                android:id="@+id/edtRepitaSenha"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="@string/prompt_password"
-                android:imeActionId="6"
-                android:imeActionLabel="@string/action_sign_in_short"
-                android:imeOptions="actionUnspecified"
-                android:inputType="textPassword"
-                android:maxLines="1"
-                android:singleLine="true" />
-
-            <Button
-                android:id="@+id/btnEscolherFoto"
-                style="@style/Widget.AppCompat.Button.Borderless.Colored"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Escolher foto de perfil" />
-
-            <Button
-                android:layout_marginTop="5pt"
-                android:background="@color/colorPrimary"
-                android:id="@+id/btnCadastrar"
-                android:textColor="#ffffff"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="CADASTRAR" />
-
+                android:gravity="center"
+                android:text="Cadastro feito com sucesso"
+                android:textColor="@color/colorPrimary"
+                android:textSize="12pt" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
-</LinearLayout>
+
+    <ScrollView
+        android:id="@+id/scroll"
+        android:layout_marginTop="20pt"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="70pt"
+                android:layout_height="70pt"
+                android:src="@mipmap/icone_" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Segurados"
+                android:textColor="@color/colorPrimary"
+                android:textSize="12pt" />
+
+            <View
+                android:layout_width="70pt"
+                android:layout_height="1pt"
+                android:layout_gravity="center"
+                android:layout_marginTop="2pt"
+                android:background="#808080" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5pt"
+                android:text="Cadastro"
+                android:textColor="@color/colorPrimary"
+                android:textSize="12pt" />
+
+
+            <androidx.cardview.widget.CardView
+                android:layout_marginBottom="2pt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20pt"
+                android:elevation="10pt"
+                app:cardCornerRadius="5pt">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:padding="10pt">
+
+                    <AutoCompleteTextView
+                        android:id="@+id/edtNome"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5pt"
+                        android:hint="@string/prompt_name"
+                        android:inputType="textEmailAddress"
+                        android:maxLines="1"
+                        android:singleLine="true" />
+
+
+                    <AutoCompleteTextView
+                        android:id="@+id/edtUsuario"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5pt"
+                        android:hint="@string/prompt_email"
+                        android:inputType="textEmailAddress"
+                        android:maxLines="1"
+                        android:singleLine="true" />
+
+
+                    <EditText
+                        android:id="@+id/edtSenha"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5pt"
+                        android:hint="@string/prompt_password"
+                        android:imeActionId="6"
+                        android:imeActionLabel="@string/action_sign_in_short"
+                        android:imeOptions="actionUnspecified"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:singleLine="true" />
+
+                    <EditText
+                        android:id="@+id/edtRepitaSenha"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5pt"
+                        android:hint="@string/prompt_password2"
+                        android:imeActionId="6"
+                        android:imeActionLabel="@string/action_sign_in_short"
+                        android:imeOptions="actionUnspecified"
+                        android:inputType="textPassword"
+                        android:maxLines="1"
+                        android:singleLine="true" />
+
+                    <Button
+                        android:id="@+id/btnEscolherFoto"
+                        style="@style/Widget.AppCompat.Button.Borderless.Colored"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="Escolher foto de perfil"
+                        android:visibility="gone" />
+
+                    <TextView
+                        android:id="@+id/txtMensagemErro"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="mensagem aqui"
+                        android:textColor="#ff0000"
+                        android:textSize="8pt"
+                        android:visibility="gone" />
+
+                    <Button
+                        android:id="@+id/btnCadastrar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="5pt"
+                        android:background="@color/colorPrimary"
+                        android:text="CADASTRAR"
+                        android:textColor="#ffffff" />
+
+                </LinearLayout>
+            </androidx.cardview.widget.CardView>
+        </LinearLayout>
+    </ScrollView>
+</FrameLayout>

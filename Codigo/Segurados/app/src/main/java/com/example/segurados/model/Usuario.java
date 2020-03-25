@@ -3,19 +3,25 @@ package com.example.segurados.model;
 public class Usuario{
     private int idUsuario;
     private String nome;
-    private String email;
+    private String usuario;
     private String senha;
     private String perfil;
 
-
-
     public Usuario(){}
 
-    public Usuario(int idUsuario, String nome, String email, String perfil,
+    public Usuario(int idUsuario, String nome, String usuario, String perfil,
                    String senha) {
         this.idUsuario = idUsuario;
         this.nome = nome;
-        this.email = email;
+        this.usuario = usuario;
+        this.perfil = perfil;
+        this.senha = senha;
+    }
+
+    public Usuario(String nome, String usuario, String perfil,
+                   String senha) {
+        this.nome = nome;
+        this.usuario = usuario;
         this.perfil = perfil;
         this.senha = senha;
     }
@@ -37,7 +43,7 @@ public class Usuario{
     }
 
     public void setEmail(String email) {
-        this.email = email;
+        this.usuario = email;
     }
 
     public void setPerfil(String perfil) {
@@ -53,7 +59,7 @@ public class Usuario{
     }
 
     public String getEmail() {
-        return email;
+        return usuario;
     }
 
     public String getPerfil() {
@@ -65,7 +71,7 @@ public class Usuario{
         return ("{ \n" +
                 "\"idUsuario\": " +idUsuario+", \n"+
                 "\"nome\": \"" +nome + "\",\n" +
-                "\"email\": \"" +email+"\", \n" +
+                "\"email\": \"" +usuario+"\", \n" +
                 "\"senha\": \"" +senha+"\", \n" +
                 "\"perfil\": \"" +perfil+"\" \n"+
                 "}");

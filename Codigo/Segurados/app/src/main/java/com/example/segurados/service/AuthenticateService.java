@@ -19,6 +19,9 @@ public interface AuthenticateService {
     @POST("authenticate/login/")
     Call<UsuarioViewModel> authenticate(@Body Usuario model);
 
+    @POST("authenticate/register/")
+    Call<UsuarioViewModel> register(@Body Usuario model);
+
 
     Retrofit retrofit = new Retrofit.Builder()
             .baseUrl(Constant.BASE_URL)

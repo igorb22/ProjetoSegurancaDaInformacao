@@ -1,6 +1,5 @@
 package com.example.segurados.view.ui.jogar;
 
-
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -38,7 +37,6 @@ import retrofit2.Response;
  * A simple {@link Fragment} subclass.
  */
 public class JogarFragment extends Fragment implements SpinningWheelView.OnRotationListener<String>  {
-
     private SpinningWheelView wheelView;
     private Button btnGirar;
     private ProgressBar pbCarregando;
@@ -52,7 +50,6 @@ public class JogarFragment extends Fragment implements SpinningWheelView.OnRotat
     public JogarFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

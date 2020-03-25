@@ -84,63 +84,69 @@ public class LoginActivity extends AppCompatActivity implements Comunicador {
             public void onClick(View v) {
                 Usuario user = new Usuario(0,"Igor Bruno",edtEmail.getText().toString(),"olamunod.pbg",edtSenha.getText().toString());
 
-                AuthenticateService auth = AuthenticateService.retrofit.create(AuthenticateService.class);
-                final Call<UsuarioViewModel> call = auth.authenticate(user);
-
                 dialog = new ProgressDialog(LoginActivity.this);
                 dialog.setMessage("Fazendo login...");
                 dialog.setCancelable(false);
                 dialog.show();
+                if (!user.getEmail().equals("") && !user.getSenha().equals("")) {
 
-                call.enqueue(new Callback<UsuarioViewModel>() {
-                    @Override
-                    public void onResponse(Call<UsuarioViewModel> call, Response<UsuarioViewModel> response) {
+                    AuthenticateService auth = AuthenticateService.retrofit.create(AuthenticateService.class);
+                    final Call<UsuarioViewModel> call = auth.authenticate(user);
 
-                        int code = response.code();
-                        if (code == 200) {
-
-                            usuarioViewModel = response.body();
-                            Toast.makeText(getBaseContext(), "TOKEN: " + usuarioViewModel.getToken(),
-                                    Toast.LENGTH_LONG).show();
-                            System.out.println(usuarioViewModel.getToken());
-
-                            realm = Realm.getDefaultInstance();
-                            realm.beginTransaction();
-                            realm.copyToRealmOrUpdate(usuarioViewModel);
-                            realm.commitTransaction();
-                            //     realm.close();
-
-                            usuarioEstatisticaService = UsuarioEstatisticaService.retrofit.create(UsuarioEstatisticaService.class);
-                            final Call<List<PontosUsuarioViewModel>> callEst = usuarioEstatisticaService.getEstatistica(usuarioViewModel.getIdUsuario(),
-                                    "bearer " +  usuarioViewModel.getToken());
-                            loadEstsProfile(callEst);
-
-                        } else { // if(code == 400) {
-
-                            msgErro.setVisibility(View.VISIBLE);
-                            //     }
-                            Toast.makeText(getBaseContext(), "Falhou: " + code, Toast.LENGTH_LONG).show();
+                    call.enqueue(new Callback<UsuarioViewModel>() {
+                        @Override
+                        public void onResponse(Call<UsuarioViewModel> call, Response<UsuarioViewModel> response) {
 
                             if (dialog.isShowing())
                                 dialog.dismiss();
+
+                            int code = response.code();
+
+                            if (code == 200) {
+
+                                usuarioViewModel = response.body();
+                                Toast.makeText(getBaseContext(), "TOKEN: " + usuarioViewModel.getToken(),
+                                        Toast.LENGTH_LONG).show();
+
+                                realm = Realm.getDefaultInstance();
+                                realm.beginTransaction();
+                                realm.copyToRealm(usuarioViewModel);
+                                realm.commitTransaction();
+                                realm.close();
+
+                                usuarioEstatisticaService = UsuarioEstatisticaService.retrofit.create(UsuarioEstatisticaService.class);
+                                final Call<List<PontosUsuarioViewModel>> callEst = usuarioEstatisticaService.getEstatistica(usuarioViewModel.getIdUsuario(),
+                                        "bearer " +  usuarioViewModel.getToken());
+                                loadEstsProfile(callEst);
+
+                            } else  {
+
+                                msgErro.setVisibility(View.VISIBLE);
+                                Toast.makeText(getBaseContext(), "Falhou: " + code, Toast.LENGTH_LONG).show();
+
+                                if (dialog.isShowing())
+                                    dialog.dismiss();
+                            }
+
                         }
-                    }
 
-                    @Override
-                    public void onFailure(Call<UsuarioViewModel> call, Throwable t) {
-                        t.printStackTrace();
-                        if(dialog.isShowing())
-                            dialog.dismiss();
+                        @Override
+                        public void onFailure(Call<UsuarioViewModel> call, Throwable t) {
 
-
-                        msgErro.setText("Algo de inesperado aconteceu. Verifique sua conexao e tente novamente. ");
-                        msgErro.setVisibility(View.VISIBLE);
-
+                            if (dialog.isShowing())
+                                dialog.dismiss();
+                            msgErro.setText("Algo inesperado aconteceu. Verifique sua conexao e tente novamente. ");
+                            msgErro.setVisibility(View.VISIBLE);
                         Toast.makeText(getBaseContext(),t.getMessage(),
                                 Toast.LENGTH_LONG).show();
 
                     }
                 });
+
+                }else{
+                    msgErro.setText("Insira informações válidas.");
+                    msgErro.setVisibility(View.VISIBLE);
+                }
             }
         });
     }
@@ -202,7 +208,7 @@ public class LoginActivity extends AppCompatActivity implements Comunicador {
                     // add ou atualizar pontuacao
                     RealmResults<UsuarioViewModel> obj = realm.where(UsuarioViewModel.class).findAll();
                         obj.get(0).setQtdQuestoes(estatsUsuario.size());
-                        System.out.println("po " + estatsUsuario.size());
+                      //  System.out.println("po " + estatsUsuario.size());
                         realm.copyToRealmOrUpdate(obj);
 
                     for(UsuarioHasPergunta uH : estatsUsuario){

@@ -32,7 +32,7 @@ namespace SeguradosAPI.Controllers
         [Route("login")]
         public IActionResult RequestToken([FromBody] UsuarioModel model) {
 
-            var user = _service.ObterPorEmailSenha(model.Email, model.Senha);
+            var user = _service.ObterPorUsuarioSenha(model.Usuario, model.Senha);
             if (user != null) {
 
                 var claims = new[]
@@ -57,13 +57,30 @@ namespace SeguradosAPI.Controllers
                     user.IdUsuario,
                     user.Nome,
                     user.Perfil,
-                    user.Email,
+                    user.Usuario,
                     token = new JwtSecurityTokenHandler().WriteToken(token)
                 });
             }
 
             return BadRequest("Credenciais inválidas");
         }
-    
+
+
+        [AllowAnonymous]
+        [HttpPost]
+        [Route("register")]
+        public IActionResult Register([FromBody] UsuarioModel model)
+        {
+
+            var user = _service.ObterPorUsuario(model.Usuario);
+            if (user == null)
+            {
+                if (_service.Add(model))
+                    return Ok(model);
+            }
+
+            return BadRequest("Esse nome de usuário já está sendo utilizado.");
+        }
+
     }
 }
