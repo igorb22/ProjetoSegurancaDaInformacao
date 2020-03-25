@@ -125,7 +125,7 @@ public class CadastrarseFragment extends Fragment {
                                                 fechaCadastro();
                                             }
                                         }, 2000);
-                                        
+
                                     } else {
                                         escondeDialog();
                                         mostraMensagem("Esse nome de usuário já está sendo utilizado.");
