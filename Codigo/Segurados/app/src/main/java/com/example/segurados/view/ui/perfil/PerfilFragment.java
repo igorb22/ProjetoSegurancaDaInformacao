@@ -84,6 +84,12 @@ public class PerfilFragment extends Fragment {
 
         setHasOptionsMenu(true);
 
+
+        //------------------ get data User --------------------//
+        Realm realm = Realm.getDefaultInstance();
+        RealmResults<UsuarioViewModel> usuario = realm.where(UsuarioViewModel.class).findAll();
+
+        // salvas respostas caso n tenha salvo
         f = new File(getActivity().getFilesDir()+"/filaRespostas.txt");
         if(f.exists()){
             if(Util.checkInternet(getActivity())){
@@ -94,8 +100,8 @@ public class PerfilFragment extends Fragment {
                     linha = br.readLine();
                     while (linha != null){
                         String [] dados = linha.split(";");
-                        new Util.AddResposta(                           //id Usuario     //id Pergunta             //acertou int
-                                new UsuarioHasPergunta(Integer.parseInt(dados[1]), Integer.parseInt(dados[0]), Integer.parseInt(dados[2])));
+                        new Util.AddResposta( getActivity(),            //id Usuario     //id Pergunta             //acertou int
+                                new UsuarioHasPergunta(Integer.parseInt(dados[1]), Integer.parseInt(dados[0]), Integer.parseInt(dados[2])), usuario.first().getToken()).start();
                     }
                     br.close();
                     f.delete();
@@ -104,9 +110,8 @@ public class PerfilFragment extends Fragment {
                 }
             }
         }
-        //------------------ get data User --------------------//
-        Realm realm = Realm.getDefaultInstance();
-        RealmResults<UsuarioViewModel> usuario = realm.where(UsuarioViewModel.class).findAll();
+        //------------------------------------------------------------------------------------------
+
         System.out.println(usuario.first().toString());
         txtNomeUsuario.setText(usuario.first().getNome());
         qtdPerguntas.setText(usuario.first().getQtdQuestoes() + " " + getString(R.string.qtd_questoes));
@@ -171,7 +176,7 @@ public class PerfilFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.op_sair) {
             if(Util.checkInternet(getActivity())){
-                if(!f.exists())
+                if(f.exists())
                     Toast.makeText(getActivity(), "Jogo sem internet, alguma(s) respostas não foram salvas.", Toast.LENGTH_LONG).show();
             }
             Util.removeUser();

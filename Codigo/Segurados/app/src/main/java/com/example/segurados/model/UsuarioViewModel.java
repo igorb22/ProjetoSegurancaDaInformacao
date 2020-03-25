@@ -76,6 +76,6 @@ public class UsuarioViewModel extends RealmObject {
 
     @Override
     public String toString() {
-        return (nome + " - " + usuario);
+        return (nome + " - " + token);
     }
 }

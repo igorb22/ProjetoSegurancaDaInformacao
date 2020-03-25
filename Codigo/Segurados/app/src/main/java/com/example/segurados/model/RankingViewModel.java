@@ -52,11 +52,12 @@ public class RankingViewModel extends RealmObject {
         this.id = id;
     }
 
-    public static Long autoIncrementId(){
-        Long key = 1L;
+    public static int autoIncrementId(){
+        int key = 1;
         Realm realm = Realm.getDefaultInstance();
         try {
-            key = realm.where(RankingViewModel.class).max("id").longValue() + 1;
+            if( realm.where(RankingViewModel.class).max("id") != null)
+                key = realm.where(RankingViewModel.class).max("id").intValue() + 1;
         } catch (NullPointerException e) {
             e.printStackTrace();
         }

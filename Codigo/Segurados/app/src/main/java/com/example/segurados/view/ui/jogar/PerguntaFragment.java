@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
@@ -20,6 +21,7 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.segurados.Interface.ComunicadorJ;
 import com.example.segurados.R;
 import com.example.segurados.adapter.OpcaoAdapter;
 import com.example.segurados.model.Opcao;
@@ -45,6 +47,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+import static com.example.segurados.util.Util.status;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -60,6 +64,7 @@ public class PerguntaFragment extends Fragment {
     private Button btnFinalizar;
     private Pergunta pergunta;
     // detalhe de interface
+    private ComunicadorJ comunicador;
     private LinearLayout linearLayout;
     private int tempo;
     private int progressStatus;
@@ -68,17 +73,26 @@ public class PerguntaFragment extends Fragment {
     private int verificaProgress;
     private ArrayList<Opcao> opcoes;
     private UsuarioViewModel user;
+    private UsuarioHasPergunta hP;
+    private  Realm realm;
     public PerguntaFragment() {
         // Required empty public constructor
     }
 
+  @Override
+  public void onActivityCreated(Bundle savedInstacedState){
+    super.onActivityCreated(savedInstacedState);
 
-    @Override
+    comunicador = (ComunicadorJ) getActivity();
+  }
+
+
+  @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v =  inflater.inflate(R.layout.fragment_pergunta, container, false);
-        Realm realm = Realm.getDefaultInstance();
+        realm = Realm.getDefaultInstance();
 
         user = realm.where(UsuarioViewModel.class).findAll().first();
 
@@ -166,7 +180,7 @@ public class PerguntaFragment extends Fragment {
           }
         }).start();
 
-        UsuarioHasPergunta hP = new UsuarioHasPergunta();
+        hP = new UsuarioHasPergunta();
         // -----------------------------------------------------------------------------
         opcaoAdapter.setOnItemClickListener(position -> {
           tempo = progressStatus;
@@ -182,7 +196,6 @@ public class PerguntaFragment extends Fragment {
               pvm.setPontos(pergunta.getPontuacao());
               Tematica tema = realm.where(Tematica.class).equalTo("idTematica", pergunta.getTematicaIdTematica()).findFirst();
               pvm.setTematica(tema);
-           //   RankingViewModel rk =  realm.where(RankingViewModel.class).equalTo("idTematica", pergunta.getTematicaIdTematica()).findFirst();
               realm.commitTransaction();
               hP.setAcertou(1);
             }else
@@ -193,30 +206,10 @@ public class PerguntaFragment extends Fragment {
             hP.setAcertou(0);
 
           menuOpcao(2); /* tempo esgotado */
+
+
         });
         // -------------------------------------------------------------------------------
-        realm.beginTransaction();
-        hP.setIdPergunta(user.getIdUsuario());
-        hP.setIdUsuario(user.getIdUsuario());
-        user.setQtdQuestoes(user.getQtdQuestoes() + 1);
-        realm.insertOrUpdate(user);
-        realm.copyToRealmOrUpdate(hP);
-        realm.commitTransaction();
-        realm.close();
-        if(Util.checkInternet(getActivity())){
-          new Util.AddResposta(hP).start();
-        }
-        else{
-          File f = new File(getActivity().getFilesDir()+"/filaRespostas.txt");
-          try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter(f, true));
-            bw.write(hP.getIdUsuario() + ";" + hP.getIdPergunta() + ";" + hP.isAcertou());
-            bw.newLine();
-            bw.close();
-          } catch (IOException e) {
-            e.printStackTrace();
-          }
-        }
         btnContinuar.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
@@ -231,6 +224,7 @@ public class PerguntaFragment extends Fragment {
             // ------------------------------------------------------------------
             // removendo o primeiro elemento do array, assim sempre podemos selecionar a pergunta de indice 0
             // Ir pra roleta de novo
+            status = false;
             FragmentManager fm = getActivity().getSupportFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
             ft.replace(R.id.containerFragment, new JogarFragment()).commit();
@@ -252,9 +246,8 @@ public class PerguntaFragment extends Fragment {
               e.printStackTrace();
             }
             // ------------------------------------------------------------------
-            FragmentManager fm = getActivity().getSupportFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.containerFragment, new PerfilFragment()).commit();
+            status = false;
+            comunicador.fimJogo(true);
           }
         });
         // -------------------------------------------------------------------------------
@@ -267,10 +260,38 @@ public class PerguntaFragment extends Fragment {
     }
 
   public void menuOpcao(int resposta){
+    realm.beginTransaction();
+    hP.setIdPergunta(user.getIdUsuario());
+    hP.setIdUsuario(user.getIdUsuario());
+    user.setQtdQuestoes(user.getQtdQuestoes() + 1);
+    realm.insertOrUpdate(user);
+    realm.insertOrUpdate(hP);
+    realm.commitTransaction();
+    realm.close();
+    if(Util.checkInternet(getActivity())){
+      //System.out.println(hP.getIdPergunta() + " " + hP.getIdUsuario() +" " + hP.isAcertou());
+      if(hP != null)
+        new Util.AddResposta(getActivity(), hP, user.getToken()).start();
+      else
+        Toast.makeText(getActivity(), "Erro ", Toast.LENGTH_LONG).show();
+    }
+    else{
+      Toast.makeText(getActivity(), " outro", Toast.LENGTH_LONG).show();
+
+      File f = new File(getActivity().getFilesDir()+"/filaRespostas.txt");
+      try {
+        BufferedWriter bw = new BufferedWriter(new FileWriter(f, true));
+        bw.write(hP.getIdUsuario() + ";" + hP.getIdPergunta() + ";" + hP.isAcertou());
+        bw.newLine();
+        bw.close();
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
     if (cardView.getVisibility() == View.GONE){
       if (resposta == 0){
         txtLog.setText("Resposta Correta!");
-        txtPontos.setText("Pontuacao: "+tempo*10);
+        txtPontos.setText("Pontuacao: "+ pergunta.getPontuacao());
         imgResposta.setImageResource(R.drawable.certo);
       }else if (resposta == 1){
         txtLog.setText("Resposta Errada!");

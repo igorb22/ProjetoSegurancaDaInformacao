@@ -164,11 +164,13 @@ public class LoginActivity extends AppCompatActivity implements Comunicador {
 
                 if(code == 200){
                     List<PontosUsuarioViewModel> estatsUsuario = response.body();
+                    realm = Realm.getDefaultInstance();
                     realm.beginTransaction();
                     for(PontosUsuarioViewModel p : estatsUsuario){
                         realm.copyToRealmOrUpdate(p);
                     }
                     realm.commitTransaction();
+                    realm.close();
                    // realm.close();
                     usuarioHasPerguntaService = UsuarioHasPerguntaService.retrofit.create(UsuarioHasPerguntaService.class);
                     final Call<List<UsuarioHasPergunta>> callQ = usuarioHasPerguntaService.getRespostasUsuario(usuarioViewModel.getIdUsuario(),
@@ -203,6 +205,7 @@ public class LoginActivity extends AppCompatActivity implements Comunicador {
 
                 if(code == 200){
                     List<UsuarioHasPergunta> estatsUsuario = response.body();
+                    realm = Realm.getDefaultInstance();
                     realm.beginTransaction();
 
                     // add ou atualizar pontuacao

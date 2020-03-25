@@ -22,6 +22,7 @@ import com.example.segurados.model.UsuarioHasPergunta;
 import com.example.segurados.model.UsuarioViewModel;
 import com.example.segurados.service.PerguntaService;
 import com.example.segurados.service.TematicaService;
+import com.example.segurados.util.Util;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
@@ -32,6 +33,8 @@ import io.realm.RealmResults;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static com.example.segurados.util.Util.status;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,8 +48,10 @@ public class JogarFragment extends Fragment implements SpinningWheelView.OnRotat
     private TematicaService tematicaService;
     private Realm realm;
     private RealmResults<UsuarioViewModel> user;
+    private RealmResults<UsuarioHasPergunta> hasPerguntas;
     private final int MIN_SPIN = 60;
     private final int MAX_SPIN = 180;
+
     public JogarFragment() {
         // Required empty public constructor
     }
@@ -64,9 +69,26 @@ public class JogarFragment extends Fragment implements SpinningWheelView.OnRotat
 
         realm = Realm.getDefaultInstance();
         user = realm.where(UsuarioViewModel.class).findAll();
-        tematicaService = TematicaService.retrofit.create(TematicaService.class);
-        final Call<List<Tematica>> call = tematicaService.getTematicas("bearer " + user.first().getToken());
-        loadDataTematic(call);
+        hasPerguntas = realm.where(UsuarioHasPergunta.class).findAll();
+
+        // se tiver internet carrega tudo da api
+        if(Util.checkInternet(getActivity())){
+            tematicaService = TematicaService.retrofit.create(TematicaService.class);
+            final Call<List<Tematica>> call = tematicaService.getTematicas("bearer " + user.first().getToken());
+            loadDataTematic(call);
+        }
+
+        // ve se tem algo no bd realm
+        else{
+            tematicaList =  realm.where(Tematica.class).findAll();
+            RealmResults<Pergunta> perguntaList = realm.where(Pergunta.class).findAll();
+            Pergunta perg = checkQuests(perguntaList);
+            setWheelSpin();
+
+            if(perg == null) {
+                Toast.makeText(getActivity(), "Você finalizou o jogo, em breve adicionaremos mais perguntas.", Toast.LENGTH_LONG).show();
+            }
+        }
 
         return v;
     }
@@ -80,37 +102,41 @@ public class JogarFragment extends Fragment implements SpinningWheelView.OnRotat
     public void onStopRotation(String item) {
         Realm realm = Realm.getDefaultInstance();
         Toast.makeText(getActivity(), item, Toast.LENGTH_LONG).show();
-
         int pos = -1;
         for(Tematica t : tematicaList){
             if(t.getTitulo().equals(item)){
                 pos = t.getIdTematica();
             }
         }
+        // aqui pega o tema que foi parou na roda
         RealmResults<Pergunta> perguntaList = realm.where(Pergunta.class).equalTo("tematicaIdTematica", pos).findAll();
-        RealmResults<UsuarioHasPergunta> hasPerguntas = realm.where(UsuarioHasPergunta.class).findAll();
-        //hasPerguntas.
-        Integer ph [] = new Integer[hasPerguntas.size()];
-        for(int i = 0; i < ph.length; i++)
-            ph[i] = hasPerguntas.get(i).getIdPergunta();
-
-        Pergunta perg = perguntaList.where().not().in("idPergunta", ph).findFirst();
+        Pergunta perg = checkQuests(perguntaList);
 
         if(perg != null) {
             Bundle bundle = new Bundle();
             FragmentManager fm = getActivity().getSupportFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
             PerguntaFragment perguntaFragment = new PerguntaFragment();
-
             bundle.putInt("idPergunta", perg.getIdPergunta());
             perguntaFragment.setArguments(bundle);
             ft.replace(R.id.containerFragment, perguntaFragment);
             ft.commit();
         }
-        Toast.makeText(getActivity(), "Gire de novo, pois esse tema já esgostou as perguntas", Toast.LENGTH_LONG).show();
+        else{
+                Toast.makeText(getActivity(), "Gire de novo, pois esse tema já esgostou as perguntas!", Toast.LENGTH_LONG).show();
+        }
 
     }
 
+    private Pergunta checkQuests(RealmResults<Pergunta> perguntaList){
+        Integer ph[] = new Integer[hasPerguntas.size()];
+        for(int i = 0; i < ph.length; i++)
+            ph[i] = hasPerguntas.get(i).getIdPergunta();
+
+        Pergunta perg = perguntaList.where().not().in("idPergunta", ph).findFirst();
+
+        return perg;
+    }
     private void loadDataTematic(Call<List<Tematica>> call){
         call.enqueue(new Callback<List<Tematica>>() {
             @Override
@@ -159,6 +185,7 @@ public class JogarFragment extends Fragment implements SpinningWheelView.OnRotat
         btnGirar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                status = true; // nspo ode sair da tela agora
                 // max angle 50
                 // duration 10 second
                 // every 50 ms rander rotation
@@ -184,6 +211,11 @@ public class JogarFragment extends Fragment implements SpinningWheelView.OnRotat
                     }
                     realm.commitTransaction();
                     setWheelSpin();
+                    RealmResults perguntaList = realm.where(Pergunta.class).findAll();
+                    Pergunta perg = checkQuests(perguntaList);
+                    if(perg == null) {
+                        Toast.makeText(getActivity(), "Você finalizou o jogo, em breve adicionaremos mais perguntas.", Toast.LENGTH_LONG).show();
+                    }
                 } else {
 
                     Toast.makeText(getActivity(), "Falhou",

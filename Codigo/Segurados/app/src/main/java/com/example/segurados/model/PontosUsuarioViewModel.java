@@ -46,11 +46,12 @@ public class PontosUsuarioViewModel extends RealmObject {
         this.id = id;
     }
 
-    public static Long autoIncrementId(){
-        Long key = 1L;
+    public static int autoIncrementId(){
+        int key = 1;
         Realm realm = Realm.getDefaultInstance();
         try {
-            key = realm.where(PontosUsuarioViewModel.class).max("id").longValue() + 1;
+            if(realm.where(PontosUsuarioViewModel.class).max("id") != null)
+            key = realm.where(PontosUsuarioViewModel.class).max("id").intValue() + 1;
         } catch (NullPointerException e) {
             e.printStackTrace();
         }

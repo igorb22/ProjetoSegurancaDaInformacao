@@ -44,7 +44,7 @@ namespace SeguradosAPI.Controllers
             if (_service.Add(usuarioPergunta))
                 return Ok(usuarioPergunta);
 
-            return null;
+            return BadRequest(usuarioPergunta);
         }
 
         // PUT: api/UsuarioHasPergunta/5
