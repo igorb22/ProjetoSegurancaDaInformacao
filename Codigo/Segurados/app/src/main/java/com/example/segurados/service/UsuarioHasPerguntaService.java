@@ -24,6 +24,7 @@ public interface UsuarioHasPerguntaService {
     @GET("usuariohaspergunta")
     Call<List<UsuarioHasPergunta>> getRespostas();
 
+    @Headers("Content-Type: application/json")
     @POST("usuariohaspergunta")
     Call<UsuarioHasPergunta> createUsuarioHasPergunta(@Body UsuarioHasPergunta usuarioHasPergunta,  @Header("Authorization") String token);
 

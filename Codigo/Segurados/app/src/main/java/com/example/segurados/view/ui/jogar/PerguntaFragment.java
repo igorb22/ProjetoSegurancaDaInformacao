@@ -263,13 +263,13 @@ public class PerguntaFragment extends Fragment {
     realm.beginTransaction();
     hP.setIdPergunta(user.getIdUsuario());
     hP.setIdUsuario(user.getIdUsuario());
-    user.setQtdQuestoes(user.getQtdQuestoes() + 1);
+    user.setQtdQuestoes(user.getQtdQuestoes()+1);
     realm.insertOrUpdate(user);
     realm.insertOrUpdate(hP);
     realm.commitTransaction();
     realm.close();
     if(Util.checkInternet(getActivity())){
-      //System.out.println(hP.getIdPergunta() + " " + hP.getIdUsuario() +" " + hP.isAcertou());
+      System.out.println(hP.getIdPergunta() + " " + hP.getIdUsuario() +" " + hP.isAcertou());
       if(hP != null)
         new Util.AddResposta(getActivity(), hP, user.getToken()).start();
       else

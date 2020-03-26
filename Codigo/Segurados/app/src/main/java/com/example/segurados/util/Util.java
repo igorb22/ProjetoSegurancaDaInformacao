@@ -56,7 +56,7 @@ public class Util {
                 @Override
                     public void onResponse(Call<UsuarioHasPergunta> call, Response<UsuarioHasPergunta> response) {
 
-                        Toast.makeText(ctx, response.code() + " c", Toast.LENGTH_LONG).show();
+                        Toast.makeText(ctx, response.code() + " - " + response.raw().networkResponse(), Toast.LENGTH_LONG).show();
 
 
                     int code = response.code();
