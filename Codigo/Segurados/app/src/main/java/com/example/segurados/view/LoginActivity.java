@@ -97,9 +97,6 @@ public class LoginActivity extends AppCompatActivity implements Comunicador {
                         @Override
                         public void onResponse(Call<UsuarioViewModel> call, Response<UsuarioViewModel> response) {
 
-                            if (dialog.isShowing())
-                                dialog.dismiss();
-
                             int code = response.code();
 
                             if (code == 200) {
@@ -201,6 +198,10 @@ public class LoginActivity extends AppCompatActivity implements Comunicador {
             @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(Call<List<UsuarioHasPergunta>> call, Response<List<UsuarioHasPergunta>> response) {
+
+                 if (dialog.isShowing())
+                      dialog.dismiss();
+                
                 int code = response.code();
 
                 if(code == 200){
@@ -223,9 +224,6 @@ public class LoginActivity extends AppCompatActivity implements Comunicador {
                     realm.commitTransaction();
                     realm.close();
 
-                    if(dialog.isShowing())
-                        dialog.dismiss();
-
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     finish();
 
@@ -234,8 +232,7 @@ public class LoginActivity extends AppCompatActivity implements Comunicador {
                     Toast.makeText(LoginActivity.this,"Falhou " + code,
                             Toast.LENGTH_LONG).show();
                     System.out.println(response.errorBody());
-                    if(dialog.isShowing())
-                        dialog.dismiss();
+                    
                 }
 
             }
