@@ -202,10 +202,10 @@ public class PerguntaFragment extends Fragment {
               menuOpcao(1); /* resposta errada */
              hP.setAcertou(0);
 
-          }else
+          }else{
             hP.setAcertou(0);
-
-          menuOpcao(2); /* tempo esgotado */
+            menuOpcao(2); /* tempo esgotado */
+          }
 
 
         });
