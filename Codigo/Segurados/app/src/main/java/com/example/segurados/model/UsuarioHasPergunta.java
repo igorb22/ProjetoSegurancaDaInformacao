@@ -10,7 +10,7 @@ public class UsuarioHasPergunta extends RealmObject {
     @PrimaryKey
     @SerializedName("idPergunta")
     private int idPergunta;
-    @SerializedName("idJogador")
+    @SerializedName("idUsuario")
     private int idUsuario;
     @SerializedName("acertou")
     private int acertou;
