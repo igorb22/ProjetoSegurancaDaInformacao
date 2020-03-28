@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:padding="10pt"
-    android:background="#e0e0e0"
+    android:background="@color/colorBackground"
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -112,7 +112,7 @@
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
             android:layout_gravity="center"
-            android:elevation="5pt"
+            android:elevation="10pt"
             android:layout_marginBottom="5pt"
             app:cardCornerRadius="5pt"
             android:layout_height="wrap_content">

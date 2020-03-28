@@ -147,8 +147,9 @@ public class PerfilFragment extends Fragment {
        private void setGraphic(RealmResults<PontosUsuarioViewModel> estats) {
         pieEntries = new ArrayList<>();
         int pontos = 0;
+        //int i = 0;
         for(PontosUsuarioViewModel us : estats){
-            pieEntries.add(new PieEntry(us.getPontos(), us.getTematica().getTitulo()));
+            pieEntries.add(new PieEntry(us.getPontos(),us.getTematica().getTitulo()));
             pontos += us.getPontos();
         }
            pontosUsuario.setText(pontos + " " + getString(R.string.pontoss));
