@@ -154,6 +154,7 @@ public class PerfilFragment extends Fragment {
            pontosUsuario.setText(pontos + " " + getString(R.string.pontoss));
            pieDataSet = new PieDataSet(pieEntries, "");
            pieData = new PieData(pieDataSet);
+           pieData.setValueFormatter( new Util.MyValueFormatter());
            pieChart.setData(pieData);
            pieChart.setDrawCenterText(true);
            pieChart.setDrawHoleEnabled(false);

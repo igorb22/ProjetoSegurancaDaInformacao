@@ -80,6 +80,7 @@ namespace SeguradosAPI.Controllers
             var perguntasUsuario =
                  (from perg in _perguntaService.ObterTodos()
                   join hasP in perguntasId on perg.IdPergunta equals hasP.IdPergunta
+                  where (hasP.Acertou == 1)
                   select new
                   {
                       idPergunta = perg.IdPergunta,

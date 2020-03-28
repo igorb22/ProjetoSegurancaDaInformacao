@@ -9,8 +9,12 @@ import com.example.segurados.model.UsuarioHasPergunta;
 import com.example.segurados.model.UsuarioHasPergunta;
 import com.example.segurados.model.UsuarioViewModel;
 import com.example.segurados.service.UsuarioHasPerguntaService;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 
 import io.realm.Realm;
 import io.realm.RealmResults;
@@ -77,7 +81,19 @@ public class Util {
                 }
             });
         }
+    }
+    public static class MyValueFormatter implements IValueFormatter {
 
+        private DecimalFormat mFormat;
 
+        public MyValueFormatter() {
+            mFormat = new DecimalFormat("###,###,##0"); // use one decimal
+        }
+
+        @Override
+        public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+            // write your logic here
+            return mFormat.format(value) + " pts"; // e.g. append a dollar-sign
+        }
     }
 }

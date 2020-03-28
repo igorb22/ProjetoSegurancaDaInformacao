@@ -192,10 +192,9 @@ public class PerguntaFragment extends Fragment {
             /* gravaResposta();  aqui o momento em que eu gravo a resposta,
              * quando o usuário clica, mas só grava se a resposta for correta */
             realm.beginTransaction();
-            PontosUsuarioViewModel pvm = realm.createObject(PontosUsuarioViewModel.class, PontosUsuarioViewModel.autoIncrementId());
-            pvm.setPontos(pergunta.getPontuacao());
-            Tematica tema = realm.where(Tematica.class).equalTo("idTematica", pergunta.getTematicaIdTematica()).findFirst();
-            pvm.setTematica(tema);
+            PontosUsuarioViewModel pvm = realm.where(PontosUsuarioViewModel.class).equalTo("idTematica", pergunta.getTematicaIdTematica()).findFirst();
+            pvm.setPontos(pergunta.getPontuacao() + pvm.getPontos());
+            realm.insertOrUpdate(pvm);
             realm.commitTransaction();
           }else
             menuOpcao(1); /* resposta errada */
