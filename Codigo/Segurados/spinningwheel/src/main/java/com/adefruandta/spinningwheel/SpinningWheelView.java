@@ -42,7 +42,7 @@ public class SpinningWheelView extends View implements WheelRotation.RotationLis
 
     private final static float TOUCH_SCALE_FACTOR = (180.0f / 320) / 2;
 
-    private final static int TEXT_SIZE = 35;
+    private final static int TEXT_SIZE = 30;
 
     private final static int TEXT_COLOR = Color.WHITE;
 

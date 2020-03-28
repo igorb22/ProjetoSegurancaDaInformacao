@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.ConnectivityManager;
 import android.widget.Toast;
 
+import com.example.segurados.model.PontosUsuarioViewModel;
 import com.example.segurados.model.UsuarioHasPergunta;
 import com.example.segurados.model.UsuarioHasPergunta;
 import com.example.segurados.model.UsuarioViewModel;
@@ -29,10 +30,9 @@ public class Util {
         Realm realm = Realm.getDefaultInstance();
 
         realm.beginTransaction();
-        RealmResults<UsuarioViewModel> user = realm.where(UsuarioViewModel.class).findAll();
-
-        user.deleteAllFromRealm();
-
+        realm.where(UsuarioViewModel.class).findAll().deleteAllFromRealm();
+        realm.where(UsuarioViewModel.class).findAll().deleteAllFromRealm();
+        realm.where(PontosUsuarioViewModel.class).findAll().deleteAllFromRealm();
         realm.commitTransaction();
 
 
@@ -56,13 +56,10 @@ public class Util {
                 @Override
                     public void onResponse(Call<UsuarioHasPergunta> call, Response<UsuarioHasPergunta> response) {
 
-                        Toast.makeText(ctx, response.code() + " - " + response.raw().networkResponse(), Toast.LENGTH_LONG).show();
-
-
                     int code = response.code();
                     if (code == 200) {
                         System.out.println(response.body());
-                        Toast.makeText(ctx, response.body() + " ", Toast.LENGTH_LONG).show();
+                        Toast.makeText(ctx, response.message() + " ", Toast.LENGTH_LONG).show();
 
                     } else if (code == 400 || code == 401 || code == 403) {
                         //todo fail

@@ -4,9 +4,13 @@ import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -47,6 +51,7 @@ public class LoginActivity extends AppCompatActivity implements Comunicador {
     private AutoCompleteTextView edtEmail;
     private EditText edtSenha;
     private TextView msgErro;
+    private CheckBox chkSenha;
     private ProgressDialog dialog;
     private  Realm realm;
     private UsuarioHasPerguntaService usuarioHasPerguntaService;
@@ -64,6 +69,7 @@ public class LoginActivity extends AppCompatActivity implements Comunicador {
         edtEmail = findViewById(R.id.edtEmail);
         edtSenha = findViewById(R.id.edtSenha);
         msgErro = findViewById(R.id.msgErro);
+        chkSenha = findViewById(R.id.chk_mostrar_senha_l);
 
         btnCadastrar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +84,19 @@ public class LoginActivity extends AppCompatActivity implements Comunicador {
             }
         });
 
+        chkSenha.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    // mostrar senha
+                    edtSenha.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
+                } else {
+                    // esconder senha
+                    edtSenha.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                }
+            }
+
+        });
 
         btnEntrar.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -211,15 +230,12 @@ public class LoginActivity extends AppCompatActivity implements Comunicador {
 
                     // add ou atualizar pontuacao
                     RealmResults<UsuarioViewModel> obj = realm.where(UsuarioViewModel.class).findAll();
-                        obj.get(0).setQtdQuestoes(estatsUsuario.size());
+                        obj.first().setQtdQuestoes(estatsUsuario.size());
                       //  System.out.println("po " + estatsUsuario.size());
                         realm.copyToRealmOrUpdate(obj);
 
                     for(UsuarioHasPergunta uH : estatsUsuario){
-                       UsuarioHasPergunta up = realm.createObject(UsuarioHasPergunta.class, uH.getIdPergunta());
-                       up.setIdUsuario(uH.getIdUsuario());
-                       up.setAcertou(uH.isAcertou());
-                       realm.copyToRealmOrUpdate(up);
+                       realm.copyToRealmOrUpdate(uH);
                     }
                     realm.commitTransaction();
                     realm.close();

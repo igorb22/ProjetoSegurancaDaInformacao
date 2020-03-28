@@ -69,7 +69,7 @@ public class JogarFragment extends Fragment implements SpinningWheelView.OnRotat
 
         realm = Realm.getDefaultInstance();
         user = realm.where(UsuarioViewModel.class).findAll();
-        hasPerguntas = realm.where(UsuarioHasPergunta.class).findAll();
+        hasPerguntas = realm.where(UsuarioHasPergunta.class).equalTo("idUsuario", user.first().getIdUsuario()).findAll();
 
         // se tiver internet carrega tudo da api
         if(Util.checkInternet(getActivity())){

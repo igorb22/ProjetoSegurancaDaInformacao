@@ -8,6 +8,7 @@ import io.realm.annotations.PrimaryKey;
 
 public class UsuarioHasPergunta extends RealmObject {
     @PrimaryKey
+    private String uniqueId;
     @SerializedName("idPergunta")
     private int idPergunta;
     @SerializedName("idUsuario")
@@ -46,5 +47,9 @@ public class UsuarioHasPergunta extends RealmObject {
 
     public int isAcertou() {
         return acertou;
+    }
+
+    public void createUniqueKey() {
+        this.uniqueId = this.idUsuario + "_" + this.idPergunta;
     }
 }

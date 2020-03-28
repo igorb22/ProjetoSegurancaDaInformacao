@@ -53,31 +53,31 @@ import static com.example.segurados.util.Util.status;
  * A simple {@link Fragment} subclass.
  */
 public class PerguntaFragment extends Fragment {
-    private RecyclerView mRecyclerView;
+  private RecyclerView mRecyclerView;
   //  private AdapterOpcao adapterOpcao;
-    private TextView txtPergunta;
-    private CardView cardView;
-    private TextView txtLog;
-    private TextView txtPontos;
-    private ImageView imgResposta;
-    private Button btnContinuar;
-    private Button btnFinalizar;
-    private Pergunta pergunta;
-    // detalhe de interface
-    private ComunicadorJ comunicador;
-    private LinearLayout linearLayout;
-    private int tempo;
-    private int progressStatus;
-    private DonutProgress donutProgress;
-    private ProgressBar progressBar;
-    private int verificaProgress;
-    private ArrayList<Opcao> opcoes;
-    private UsuarioViewModel user;
-    private UsuarioHasPergunta hP;
-    private  Realm realm;
-    public PerguntaFragment() {
-        // Required empty public constructor
-    }
+  private TextView txtPergunta;
+  private CardView cardView;
+  private TextView txtLog;
+  private TextView txtPontos;
+  private ImageView imgResposta;
+  private Button btnContinuar;
+  private Button btnFinalizar;
+  private Pergunta pergunta;
+  // detalhe de interface
+  private ComunicadorJ comunicador;
+  private LinearLayout linearLayout;
+  private int tempo;
+  private int progressStatus;
+  private DonutProgress donutProgress;
+  private ProgressBar progressBar;
+  private int verificaProgress;
+  private ArrayList<Opcao> opcoes;
+  private UsuarioViewModel user;
+  private UsuarioHasPergunta hP;
+  private  Realm realm;
+  public PerguntaFragment() {
+    // Required empty public constructor
+  }
 
   @Override
   public void onActivityCreated(Bundle savedInstacedState){
@@ -88,181 +88,184 @@ public class PerguntaFragment extends Fragment {
 
 
   @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View v =  inflater.inflate(R.layout.fragment_pergunta, container, false);
-        realm = Realm.getDefaultInstance();
+  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                           Bundle savedInstanceState) {
+    // Inflate the layout for this fragment
+    View v =  inflater.inflate(R.layout.fragment_pergunta, container, false);
+    realm = Realm.getDefaultInstance();
 
-        user = realm.where(UsuarioViewModel.class).findAll().first();
+    user = realm.where(UsuarioViewModel.class).findAll().first();
 
-        int key = -1;
-        if((this.getArguments() != null))
-           key = this.getArguments().getInt("idPergunta");
+    int key = -1;
+    if((this.getArguments() != null))
+      key = this.getArguments().getInt("idPergunta");
 
-        if(key != -1){
-          pergunta = realm.where(Pergunta.class).equalTo("idPergunta", key).findFirst();
-       }
-
-      txtPergunta = v.findViewById(R.id.txt_pergunta_pg);
-      // ----------------------------------------------------------------------
-      if (pergunta != null) {
-        // referencia dos itens do carView
-        cardView = v.findViewById(R.id.mycard_pg);
-        txtPontos = v.findViewById(R.id.txt_pontuacao_obtida_pg);
-        txtLog = v.findViewById(R.id.txt_log_resposta_pg);
-        imgResposta = v.findViewById(R.id.img_resposta_pg);
-        btnContinuar = v.findViewById(R.id.btn_continuar_pg);
-        btnFinalizar = v.findViewById(R.id.btn_finalizar_pg);
-        // refenrencia dos itens do progressbar
-        donutProgress = v.findViewById(R.id.donut_progress_pg);
-        // recycler
-        mRecyclerView = v.findViewById(R.id.rcv_opcao_pg);
-        // pergunta
-        txtPergunta = v.findViewById(R.id.txt_pergunta_pg);
-        progressBar = v.findViewById(R.id.progress_pg);
-        linearLayout = v.findViewById(R.id.linear);
-
-        // ------------------------------------------------------------------
-        opcoes = new ArrayList<>();
-        txtPergunta.setText(pergunta.getQuestao());
-
-        Opcao op = new Opcao(pergunta.getAlternativa1());
-        opcoes.add(op);
-        op = new Opcao(pergunta.getAlternativa2());
-        opcoes.add(op);
-        op = new Opcao(pergunta.getAlternativa3());
-        opcoes.add(op);
-        op = new Opcao(pergunta.getAlternativa4());
-        opcoes.add(op);
-        // ---------------------------------------------------------------------
-        //circle progress
-
-        donutProgress.setFinishedStrokeColor(ContextCompat.getColor(Objects.requireNonNull(getActivity()), R.color.colorPrimaryDark));
-        donutProgress.setTextColor(ContextCompat.getColor(Objects.requireNonNull(getActivity()), R.color.colorAccent));
-        donutProgress.setKeepScreenOn(true);
-        donutProgress.setSuffixText("s");
-        //---------------------------------------------------------------------
-        //Componentes do Recicler
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 1);
-        mRecyclerView.setHasFixedSize(true);
-        mRecyclerView.setLayoutManager(layoutManager);
-
-        OpcaoAdapter opcaoAdapter= new OpcaoAdapter(opcoes, getContext());
-        mRecyclerView.setAdapter(opcaoAdapter);
-
-        // -----------------------------------------------------------------------
-        progressStatus =  pergunta.getTempo();
-        int tmax  = pergunta.getTempo();
-        donutProgress.setMax(tmax);
-        // ProgressBar que conta o tempo de resposta do usuário
-        Handler handler = new Handler();
-        new Thread(new Runnable() {
-          public void run() {
-            while (progressStatus >= 0) {
-              handler.post(new Runnable() {
-                public void run() {
-                  donutProgress.setProgress(progressStatus);
-                  verificaProgress = progressStatus;
-                  if (progressStatus == 0) {
-                    menuOpcao(2);
-                  }
-                }
-              });
-              try {
-                // Sleep for 1000 milliseconds.
-                Thread.sleep(1000);
-              } catch (InterruptedException e) {
-                e.printStackTrace();
-              }
-              progressStatus -= 1;
-            }
-          }
-        }).start();
-
-        hP = new UsuarioHasPergunta();
-        // -----------------------------------------------------------------------------
-        opcaoAdapter.setOnItemClickListener(position -> {
-          tempo = progressStatus;
-          progressStatus = 0;
-          if (tempo > 0) {
-            // verificando se a opcao escolhida foi a correta
-            if (position  == pergunta.getOpcaoCorreta() -1) {
-              menuOpcao(0);
-             /* gravaResposta();  aqui o momento em que eu gravo a resposta,
-               * quando o usuário clica, mas só grava se a resposta for correta */
-              realm.beginTransaction();
-              PontosUsuarioViewModel pvm = realm.createObject(PontosUsuarioViewModel.class, PontosUsuarioViewModel.autoIncrementId());
-              pvm.setPontos(pergunta.getPontuacao());
-              Tematica tema = realm.where(Tematica.class).equalTo("idTematica", pergunta.getTematicaIdTematica()).findFirst();
-              pvm.setTematica(tema);
-              realm.commitTransaction();
-              hP.setAcertou(1);
-            }else
-              menuOpcao(1); /* resposta errada */
-             hP.setAcertou(0);
-
-          }else{
-            hP.setAcertou(0);
-            menuOpcao(2); /* tempo esgotado */
-          }
-
-
-        });
-        // -------------------------------------------------------------------------------
-        btnContinuar.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            linearLayout.setVisibility(View.GONE);
-            progressBar.setVisibility(View.VISIBLE);
-            try {
-              Thread.sleep(1000);
-
-            } catch (InterruptedException e) {
-              e.printStackTrace();
-            }
-            // ------------------------------------------------------------------
-            // removendo o primeiro elemento do array, assim sempre podemos selecionar a pergunta de indice 0
-            // Ir pra roleta de novo
-            status = false;
-            FragmentManager fm = getActivity().getSupportFragmentManager();
-            FragmentTransaction ft = fm.beginTransaction();
-            ft.replace(R.id.containerFragment, new JogarFragment()).commit();
-
-          }
-        });
-
-
-
-        btnFinalizar.setOnClickListener(new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            // aqui a requisicão
-            linearLayout.setVisibility(View.GONE);
-            progressBar.setVisibility(View.VISIBLE);
-            try {
-              Thread.sleep(1000);
-            } catch (InterruptedException e) {
-              e.printStackTrace();
-            }
-            // ------------------------------------------------------------------
-            status = false;
-            comunicador.fimJogo(true);
-          }
-        });
-        // -------------------------------------------------------------------------------
-      }else {
-        //donutProgress.setVisibility(View.GONE);
-        txtPergunta.setText("As perguntas acabaram, tente novamente mais tarde!");
-      }
-
-      return v;
+    if(key != -1){
+      pergunta = realm.where(Pergunta.class).equalTo("idPergunta", key).findFirst();
     }
 
+    txtPergunta = v.findViewById(R.id.txt_pergunta_pg);
+    // ----------------------------------------------------------------------
+    if (pergunta != null) {
+      // referencia dos itens do carView
+      cardView = v.findViewById(R.id.mycard_pg);
+      txtPontos = v.findViewById(R.id.txt_pontuacao_obtida_pg);
+      txtLog = v.findViewById(R.id.txt_log_resposta_pg);
+      imgResposta = v.findViewById(R.id.img_resposta_pg);
+      btnContinuar = v.findViewById(R.id.btn_continuar_pg);
+      btnFinalizar = v.findViewById(R.id.btn_finalizar_pg);
+      // refenrencia dos itens do progressbar
+      donutProgress = v.findViewById(R.id.donut_progress_pg);
+      // recycler
+      mRecyclerView = v.findViewById(R.id.rcv_opcao_pg);
+      // pergunta
+      txtPergunta = v.findViewById(R.id.txt_pergunta_pg);
+      progressBar = v.findViewById(R.id.progress_pg);
+      linearLayout = v.findViewById(R.id.linear);
+
+      // ------------------------------------------------------------------
+      opcoes = new ArrayList<>();
+      txtPergunta.setText(pergunta.getQuestao());
+
+      Opcao op = new Opcao(pergunta.getAlternativa1());
+      opcoes.add(op);
+      op = new Opcao(pergunta.getAlternativa2());
+      opcoes.add(op);
+      op = new Opcao(pergunta.getAlternativa3());
+      opcoes.add(op);
+      op = new Opcao(pergunta.getAlternativa4());
+      opcoes.add(op);
+      // ---------------------------------------------------------------------
+      //circle progress
+
+      donutProgress.setFinishedStrokeColor(ContextCompat.getColor(Objects.requireNonNull(getActivity()), R.color.colorPrimaryDark));
+      donutProgress.setTextColor(ContextCompat.getColor(Objects.requireNonNull(getActivity()), R.color.colorAccent));
+      donutProgress.setKeepScreenOn(true);
+      donutProgress.setSuffixText("s");
+      //---------------------------------------------------------------------
+      //Componentes do Recicler
+      RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 1);
+      mRecyclerView.setHasFixedSize(true);
+      mRecyclerView.setLayoutManager(layoutManager);
+
+      OpcaoAdapter opcaoAdapter= new OpcaoAdapter(opcoes, getContext());
+      mRecyclerView.setAdapter(opcaoAdapter);
+
+      // -----------------------------------------------------------------------
+      progressStatus =  pergunta.getTempo();
+      int tmax  = pergunta.getTempo();
+      donutProgress.setMax(tmax);
+      // ProgressBar que conta o tempo de resposta do usuário
+      Handler handler = new Handler();
+      new Thread(new Runnable() {
+        public void run() {
+          while (progressStatus >= 0) {
+            handler.post(new Runnable() {
+              public void run() {
+                donutProgress.setProgress(progressStatus);
+                verificaProgress = progressStatus;
+                if (progressStatus == 0) {
+                  menuOpcao(2);
+                }
+              }
+            });
+            try {
+              // Sleep for 1000 milliseconds.
+              Thread.sleep(1000);
+            } catch (InterruptedException e) {
+              e.printStackTrace();
+            }
+            progressStatus -= 1;
+          }
+        }
+      }).start();
+
+      hP = new UsuarioHasPergunta();
+      // -----------------------------------------------------------------------------
+      opcaoAdapter.setOnItemClickListener(position -> {
+        tempo = progressStatus;
+        progressStatus = 0;
+        if (tempo > 0) {
+          // verificando se a opcao escolhida foi a correta
+          if (position  == pergunta.getOpcaoCorreta() -1) {
+            menuOpcao(0);
+            /* gravaResposta();  aqui o momento em que eu gravo a resposta,
+             * quando o usuário clica, mas só grava se a resposta for correta */
+            realm.beginTransaction();
+            PontosUsuarioViewModel pvm = realm.createObject(PontosUsuarioViewModel.class, PontosUsuarioViewModel.autoIncrementId());
+            pvm.setPontos(pergunta.getPontuacao());
+            Tematica tema = realm.where(Tematica.class).equalTo("idTematica", pergunta.getTematicaIdTematica()).findFirst();
+            pvm.setTematica(tema);
+            realm.commitTransaction();
+          }else
+            menuOpcao(1); /* resposta errada */
+
+        }else{
+          menuOpcao(2); /* tempo esgotado */
+        }
+
+
+      });
+      // -------------------------------------------------------------------------------
+      btnContinuar.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          linearLayout.setVisibility(View.GONE);
+          progressBar.setVisibility(View.VISIBLE);
+          try {
+            Thread.sleep(1000);
+
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
+          // ------------------------------------------------------------------
+          // removendo o primeiro elemento do array, assim sempre podemos selecionar a pergunta de indice 0
+          // Ir pra roleta de novo
+          status = false;
+          FragmentManager fm = getActivity().getSupportFragmentManager();
+          FragmentTransaction ft = fm.beginTransaction();
+          ft.replace(R.id.containerFragment, new JogarFragment()).commit();
+
+        }
+      });
+
+
+
+      btnFinalizar.setOnClickListener(new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          // aqui a requisicão
+          linearLayout.setVisibility(View.GONE);
+          progressBar.setVisibility(View.VISIBLE);
+          try {
+            Thread.sleep(1000);
+          } catch (InterruptedException e) {
+            e.printStackTrace();
+          }
+          // ------------------------------------------------------------------
+          status = false;
+          comunicador.fimJogo(true);
+        }
+      });
+      // -------------------------------------------------------------------------------
+    }else {
+      //donutProgress.setVisibility(View.GONE);
+      txtPergunta.setText("As perguntas acabaram, tente novamente mais tarde!");
+    }
+
+    return v;
+  }
+
   public void menuOpcao(int resposta){
+    if(resposta == 0)
+      hP.setAcertou(1);
+    else
+      hP.setAcertou(0);
+
     realm.beginTransaction();
-    hP.setIdPergunta(user.getIdUsuario());
+    hP.setIdPergunta(pergunta.getIdPergunta());
     hP.setIdUsuario(user.getIdUsuario());
+    hP.createUniqueKey();
     user.setQtdQuestoes(user.getQtdQuestoes()+1);
     realm.insertOrUpdate(user);
     realm.insertOrUpdate(hP);

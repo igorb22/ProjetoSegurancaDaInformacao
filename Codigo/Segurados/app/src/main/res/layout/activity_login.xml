@@ -83,6 +83,14 @@
                         android:maxLines="1"
                         android:singleLine="true" />
 
+                    <CheckBox
+                        android:id="@+id/chk_mostrar_senha_l"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Mostrar senha"
+                        android:textAllCaps="true"
+                        android:textColor="@color/colorPrimaryDark" />
+
                     <TextView
                         android:id="@+id/msgErro"
                         android:layout_width="wrap_content"

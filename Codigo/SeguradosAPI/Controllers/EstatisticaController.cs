@@ -62,7 +62,7 @@ namespace SeguradosAPI.Controllers
 
             if (ranking != null)
             {
-                ranking.OrderBy(s => s.Pontos);
+                ranking = ranking.OrderByDescending(s=> s.Pontos).ToList();
                 return Ok(ranking);
             }
 
@@ -80,7 +80,6 @@ namespace SeguradosAPI.Controllers
             var perguntasUsuario =
                  (from perg in _perguntaService.ObterTodos()
                   join hasP in perguntasId on perg.IdPergunta equals hasP.IdPergunta
-                  where (hasP.Acertou == 1)
                   select new
                   {
                       idPergunta = perg.IdPergunta,
