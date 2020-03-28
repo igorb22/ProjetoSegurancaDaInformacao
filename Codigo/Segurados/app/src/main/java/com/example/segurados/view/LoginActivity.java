@@ -53,10 +53,11 @@ public class LoginActivity extends AppCompatActivity implements Comunicador {
     private TextView msgErro;
     private CheckBox chkSenha;
     private ProgressDialog dialog;
-    private  Realm realm;
+    private Realm realm;
     private UsuarioHasPerguntaService usuarioHasPerguntaService;
     private UsuarioEstatisticaService usuarioEstatisticaService;
     private UsuarioViewModel usuarioViewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,7 +102,7 @@ public class LoginActivity extends AppCompatActivity implements Comunicador {
         btnEntrar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Usuario user = new Usuario(0,"Igor Bruno",edtEmail.getText().toString(),"olamunod.pbg",edtSenha.getText().toString());
+                Usuario user = new Usuario(0, "Igor Bruno", edtEmail.getText().toString(), "olamunod.pbg", edtSenha.getText().toString());
 
                 dialog = new ProgressDialog(LoginActivity.this);
                 dialog.setMessage("Fazendo login...");
@@ -121,8 +122,7 @@ public class LoginActivity extends AppCompatActivity implements Comunicador {
                             if (code == 200) {
 
                                 usuarioViewModel = response.body();
-                                Toast.makeText(getBaseContext(), "TOKEN: " + usuarioViewModel.getToken(),
-                                        Toast.LENGTH_LONG).show();
+                                //Toast.makeText(getBaseContext(), "TOKEN: " + usuarioViewModel.getToken(),Toast.LENGTH_LONG).show();
 
                                 realm = Realm.getDefaultInstance();
                                 realm.beginTransaction();
@@ -132,13 +132,13 @@ public class LoginActivity extends AppCompatActivity implements Comunicador {
 
                                 usuarioEstatisticaService = UsuarioEstatisticaService.retrofit.create(UsuarioEstatisticaService.class);
                                 final Call<List<PontosUsuarioViewModel>> callEst = usuarioEstatisticaService.getEstatistica(usuarioViewModel.getIdUsuario(),
-                                        "bearer " +  usuarioViewModel.getToken());
+                                        "bearer " + usuarioViewModel.getToken());
                                 loadEstsProfile(callEst);
 
-                            } else  {
+                            } else {
 
                                 msgErro.setVisibility(View.VISIBLE);
-                                Toast.makeText(getBaseContext(), "Falhou: " + code, Toast.LENGTH_LONG).show();
+                                //Toast.makeText(getBaseContext(), "Falhou: " + code, Toast.LENGTH_LONG).show();
 
                                 if (dialog.isShowing())
                                     dialog.dismiss();
@@ -153,13 +153,13 @@ public class LoginActivity extends AppCompatActivity implements Comunicador {
                                 dialog.dismiss();
                             msgErro.setText("Algo inesperado aconteceu. Verifique sua conexao e tente novamente. ");
                             msgErro.setVisibility(View.VISIBLE);
-                        Toast.makeText(getBaseContext(),t.getMessage(),
-                                Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getBaseContext(),t.getMessage(),Toast.LENGTH_LONG).show();
 
-                    }
-                });
-
-                }else{
+                        }
+                    });
+                } else {
+                    if (dialog.isShowing())
+                        dialog.dismiss();
                     msgErro.setText("Insira informações válidas.");
                     msgErro.setVisibility(View.VISIBLE);
                 }
@@ -172,34 +172,33 @@ public class LoginActivity extends AppCompatActivity implements Comunicador {
         containerLogin.setVisibility(View.VISIBLE);
     }
 
-    private void loadEstsProfile(Call<List<PontosUsuarioViewModel>> call){
+    private void loadEstsProfile(Call<List<PontosUsuarioViewModel>> call) {
         call.enqueue(new Callback<List<PontosUsuarioViewModel>>() {
             @Override
             public void onResponse(Call<List<PontosUsuarioViewModel>> call, Response<List<PontosUsuarioViewModel>> response) {
                 int code = response.code();
 
-                if(code == 200){
+                if (code == 200) {
                     List<PontosUsuarioViewModel> estatsUsuario = response.body();
                     realm = Realm.getDefaultInstance();
                     realm.beginTransaction();
-                    for(PontosUsuarioViewModel p : estatsUsuario){
+                    for (PontosUsuarioViewModel p : estatsUsuario) {
                         realm.copyToRealmOrUpdate(p);
                     }
                     realm.commitTransaction();
                     realm.close();
-                   // realm.close();
+                    // realm.close();
                     usuarioHasPerguntaService = UsuarioHasPerguntaService.retrofit.create(UsuarioHasPerguntaService.class);
                     final Call<List<UsuarioHasPergunta>> callQ = usuarioHasPerguntaService.getRespostasUsuario(usuarioViewModel.getIdUsuario(),
-                            "bearer " +  usuarioViewModel.getToken());
+                            "bearer " + usuarioViewModel.getToken());
                     loadQtdPrguntas(callQ);
 
-                }else{
+                } else {
 
-                    Toast.makeText(LoginActivity.this,"Falhou " + code,
-                            Toast.LENGTH_LONG).show();
+                    //Toast.makeText(LoginActivity.this,"Falhou " + code,Toast.LENGTH_LONG).show();
                     System.out.println(response.errorBody());
 
-                    if(dialog.isShowing())
+                    if (dialog.isShowing())
                         dialog.dismiss();
                 }
 
@@ -212,30 +211,30 @@ public class LoginActivity extends AppCompatActivity implements Comunicador {
         });
     }
 
-    private void loadQtdPrguntas(Call<List<UsuarioHasPergunta>> call){
+    private void loadQtdPrguntas(Call<List<UsuarioHasPergunta>> call) {
         call.enqueue(new Callback<List<UsuarioHasPergunta>>() {
             @SuppressLint("SetTextI18n")
             @Override
             public void onResponse(Call<List<UsuarioHasPergunta>> call, Response<List<UsuarioHasPergunta>> response) {
 
-                 if (dialog.isShowing())
-                      dialog.dismiss();
-                
+                if (dialog.isShowing())
+                    dialog.dismiss();
+
                 int code = response.code();
 
-                if(code == 200){
+                if (code == 200) {
                     List<UsuarioHasPergunta> estatsUsuario = response.body();
                     realm = Realm.getDefaultInstance();
                     realm.beginTransaction();
 
                     // add ou atualizar pontuacao
                     RealmResults<UsuarioViewModel> obj = realm.where(UsuarioViewModel.class).findAll();
-                        obj.first().setQtdQuestoes(estatsUsuario.size());
-                      //  System.out.println("po " + estatsUsuario.size());
-                        realm.copyToRealmOrUpdate(obj);
+                    obj.first().setQtdQuestoes(estatsUsuario.size());
+                    //  System.out.println("po " + estatsUsuario.size());
+                    realm.copyToRealmOrUpdate(obj);
 
-                    for(UsuarioHasPergunta uH : estatsUsuario){
-                       realm.copyToRealmOrUpdate(uH);
+                    for (UsuarioHasPergunta uH : estatsUsuario) {
+                        realm.copyToRealmOrUpdate(uH);
                     }
                     realm.commitTransaction();
                     realm.close();
@@ -243,12 +242,12 @@ public class LoginActivity extends AppCompatActivity implements Comunicador {
                     startActivity(new Intent(LoginActivity.this, MainActivity.class));
                     finish();
 
-                }else{
+                } else {
 
-                    Toast.makeText(LoginActivity.this,"Falhou " + code,
+                    Toast.makeText(LoginActivity.this, "Falhou " + code,
                             Toast.LENGTH_LONG).show();
                     System.out.println(response.errorBody());
-                    
+
                 }
 
             }

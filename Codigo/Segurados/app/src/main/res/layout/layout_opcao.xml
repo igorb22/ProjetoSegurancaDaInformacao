@@ -2,14 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="2pt"
+    android:padding="1pt"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/myCard"
         android:layout_width="match_parent"
-        android:elevation="5pt"
+        android:elevation="10pt"
         app:cardCornerRadius="5pt"
         android:layout_height="wrap_content"
         android:layout_marginBottom="1pt">

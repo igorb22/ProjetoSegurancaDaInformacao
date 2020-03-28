@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity implements ComunicadorJ, Vie
             switch (menuItem.getItemId()) {
                 case R.id.nav_perfil:
                     if(!status){
-                        Toast.makeText(getBaseContext(),"PERFIL",Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getBaseContext(),"PERFIL",Toast.LENGTH_LONG).show();
 
                         instanciaFragment(PERFIL_FRAGMENT);
 
@@ -48,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements ComunicadorJ, Vie
                     }
                 case R.id.nav_jogar:
                     if(!status){
-                        Toast.makeText(getBaseContext(),"JOGAR",Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getBaseContext(),"JOGAR",Toast.LENGTH_LONG).show();
 
                         instanciaFragment(JOGAR_FRAGMENT);
 
@@ -56,7 +56,7 @@ public class MainActivity extends AppCompatActivity implements ComunicadorJ, Vie
                     }
                 case R.id.nav_ranking:
                     if(!status) {
-                        Toast.makeText(getBaseContext(), "RANKING", Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getBaseContext(), "RANKING", Toast.LENGTH_LONG).show();
 
                         instanciaFragment(RANKING_FRAMENT);
 

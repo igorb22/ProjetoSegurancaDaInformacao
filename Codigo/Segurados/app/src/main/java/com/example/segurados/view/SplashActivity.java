@@ -31,13 +31,7 @@ public class SplashActivity extends AppCompatActivity {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         new VerificaUsuario().start();
-       /* new Handler().postDelayed(new Runnable(){
-            @Override
-            public void run(){
-                startActivity(new Intent(SplashActivity.this, LoginActivity.class));
-                finish();
-            }
-        },6000); */
+
     }
 
     public class VerificaUsuario extends Thread {
@@ -62,15 +56,13 @@ public class SplashActivity extends AppCompatActivity {
                         int code = response.code();
 
                         if (code == 200) {
-                            Toast.makeText(getBaseContext(), "requisicao deu certo",
-                                    Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getBaseContext(), "requisicao deu certo",Toast.LENGTH_LONG).show();
 
                             startActivity(new Intent(SplashActivity.this, MainActivity.class));
                             finish();
 
                         } else if (code == 400 || code == 401 || code == 403) {
-                            Toast.makeText(getBaseContext(), "Nao autorizado" + code,
-                                    Toast.LENGTH_LONG).show();
+                            //Toast.makeText(getBaseContext(), "Nao autorizado" + code,Toast.LENGTH_LONG).show();
 
                             Util.removeUser();
                             startActivity(new Intent(SplashActivity.this, LoginActivity.class));
@@ -81,8 +73,7 @@ public class SplashActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(Call<Usuario> call, Throwable t) {
 
-                        Toast.makeText(getBaseContext(), "Algo deu errado. Verifique sua conexao!.",
-                                Toast.LENGTH_LONG).show();
+                        //Toast.makeText(getBaseContext(), "Algo deu errado. Verifique sua conexao!.",Toast.LENGTH_LONG).show();
 
                         startActivity(new Intent(SplashActivity.this, MainActivity.class));
                         finish();
