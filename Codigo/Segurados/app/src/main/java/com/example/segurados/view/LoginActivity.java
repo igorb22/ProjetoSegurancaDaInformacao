@@ -108,6 +108,7 @@ public class LoginActivity extends AppCompatActivity implements Comunicador {
                 dialog.setMessage("Fazendo login...");
                 dialog.setCancelable(false);
                 dialog.show();
+
                 if (!user.getEmail().equals("") && !user.getSenha().equals("")) {
 
                     AuthenticateService auth = AuthenticateService.retrofit.create(AuthenticateService.class);
@@ -136,7 +137,7 @@ public class LoginActivity extends AppCompatActivity implements Comunicador {
                                 loadEstsProfile(callEst);
 
                             } else {
-
+                                msgErro.setText("Email ou Senha incorreto");
                                 msgErro.setVisibility(View.VISIBLE);
                                 //Toast.makeText(getBaseContext(), "Falhou: " + code, Toast.LENGTH_LONG).show();
 
@@ -160,6 +161,7 @@ public class LoginActivity extends AppCompatActivity implements Comunicador {
                 } else {
                     if (dialog.isShowing())
                         dialog.dismiss();
+
                     msgErro.setText("Insira informações válidas.");
                     msgErro.setVisibility(View.VISIBLE);
                 }
@@ -197,7 +199,7 @@ public class LoginActivity extends AppCompatActivity implements Comunicador {
                 } else {
 
                     //Toast.makeText(LoginActivity.this,"Falhou " + code,Toast.LENGTH_LONG).show();
-                    System.out.println(response.errorBody());
+                    //System.out.println(response.errorBody());
 
                     if (dialog.isShowing())
                         dialog.dismiss();
@@ -250,9 +252,8 @@ public class LoginActivity extends AppCompatActivity implements Comunicador {
 
                 } else {
 
-                    Toast.makeText(LoginActivity.this, "Falhou " + code,
-                            Toast.LENGTH_LONG).show();
-                    System.out.println(response.errorBody());
+                    //Toast.makeText(LoginActivity.this, "Falhou " + code,Toast.LENGTH_LONG).show();
+                    //System.out.println(response.errorBody());
 
                 }
 
