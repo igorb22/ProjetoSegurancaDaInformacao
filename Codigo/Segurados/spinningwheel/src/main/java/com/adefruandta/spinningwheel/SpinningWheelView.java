@@ -459,9 +459,7 @@ public class SpinningWheelView extends View implements WheelRotation.RotationLis
             int itemsResId = typedArray.getResourceId(R.styleable.Wheel_wheel_items, 0);
             setItems(itemsResId);
 
-int t = adjustTextSize(TEXT_PER_SIZE);
-System.out.println(t);
-            float wheelTextSize = typedArray.getDimension(R.styleable.Wheel_wheel_text_size, t);
+            float wheelTextSize = typedArray.getDimension(R.styleable.Wheel_wheel_text_size, adjustTextSize(TEXT_PER_SIZE));
             setWheelTextSize(wheelTextSize);
 
             int wheelTextColor = typedArray.getColor(R.styleable.Wheel_wheel_text_color, TEXT_COLOR);
