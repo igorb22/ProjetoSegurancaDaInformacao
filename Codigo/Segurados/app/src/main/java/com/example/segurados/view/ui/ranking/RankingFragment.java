@@ -77,7 +77,12 @@ public class RankingFragment extends Fragment {
                     System.out.println(response.body().get(0).getPerfil());
                     realm.beginTransaction();
                     for(RankingViewModel r :ranking) {
-                        realm.copyToRealmOrUpdate(r);
+                        if(realm.where(RankingViewModel.class).equalTo("nomeUsuario", r.getNomeUsuario()).findFirst() == null) {
+                            RankingViewModel rnk = realm.createObject(RankingViewModel.class, RankingViewModel.autoIncrementId());
+                            rnk.setNomeUsuario(r.getNomeUsuario());
+                            rnk.setPerfil(r.getPerfil());
+                            rnk.setPontos(r.getPontos());
+                        }
                     }
                     realm.commitTransaction();
                    setRanking(ranking);

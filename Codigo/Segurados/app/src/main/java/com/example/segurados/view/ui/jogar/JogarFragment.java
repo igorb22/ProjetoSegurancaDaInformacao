@@ -88,8 +88,6 @@ public class JogarFragment extends Fragment implements SpinningWheelView.OnRotat
         user = realm.where(UsuarioViewModel.class).findAll();
         hasPerguntas = realm.where(UsuarioHasPergunta.class).equalTo("idUsuario", user.first().getIdUsuario()).findAll();
 
-
-
         txtNomeUsuario.setText(user.first().getNome());
         qtdPerguntas.setText(user.first().getQtdQuestoes() + " " + getString(R.string.qtd_questoes));
         Glide.with(getActivity())
@@ -112,7 +110,7 @@ public class JogarFragment extends Fragment implements SpinningWheelView.OnRotat
             pontos += us.getPontos();
         }
         pontosUsuario.setText(pontos + " " + getString(R.string.pontoss));
-
+        status = false;
         // se tiver internet carrega tudo da api
         if(Util.checkInternet(getActivity())){
             tematicaService = TematicaService.retrofit.create(TematicaService.class);
@@ -155,6 +153,7 @@ public class JogarFragment extends Fragment implements SpinningWheelView.OnRotat
         Pergunta perg = checkQuests(perguntaList);
 
         if(perg != null) {
+            status = true;
             Bundle bundle = new Bundle();
             FragmentManager fm = getActivity().getSupportFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
@@ -176,10 +175,6 @@ public class JogarFragment extends Fragment implements SpinningWheelView.OnRotat
             ph[i] = hasPerguntas.get(i).getIdPergunta();
 
         Pergunta perg = perguntaList.where().not().in("idPergunta", ph).findFirst();
-        if(perg == null)
-            status = false;
-        else
-            status = true; // nspo ode sair da tela agora
         return perg;
     }
     private void loadDataTematic(Call<List<Tematica>> call){

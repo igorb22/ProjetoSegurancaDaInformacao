@@ -63,7 +63,7 @@ public class Util {
                     int code = response.code();
                     if (code == 200) {
                         System.out.println(response.body());
-                        Toast.makeText(ctx, response.message() + " ", Toast.LENGTH_LONG).show();
+                        Toast.makeText(ctx, "Resposta salva!", Toast.LENGTH_LONG).show();
 
                     } else if (code == 400 || code == 401 || code == 403) {
                         //todo fail
@@ -87,7 +87,7 @@ public class Util {
         private DecimalFormat mFormat;
 
         public MyValueFormatter() {
-            mFormat = new DecimalFormat("###,###,##0"); // use one decimal
+            mFormat = new DecimalFormat("###,###,##0.0"); // use one decimal
         }
 
         @Override

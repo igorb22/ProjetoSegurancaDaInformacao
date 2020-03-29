@@ -183,6 +183,7 @@ public class LoginActivity extends AppCompatActivity implements Comunicador {
                     realm = Realm.getDefaultInstance();
                     realm.beginTransaction();
                     for (PontosUsuarioViewModel p : estatsUsuario) {
+                        p.setId(PontosUsuarioViewModel.autoIncrementId());
                         realm.copyToRealmOrUpdate(p);
                     }
                     realm.commitTransaction();
@@ -234,7 +235,12 @@ public class LoginActivity extends AppCompatActivity implements Comunicador {
                     realm.copyToRealmOrUpdate(obj);
 
                     for (UsuarioHasPergunta uH : estatsUsuario) {
-                        realm.copyToRealmOrUpdate(uH);
+                        UsuarioHasPergunta us = new UsuarioHasPergunta();
+                        us.setIdUsuario(uH.getIdUsuario());
+                        us.setIdPergunta(uH.getIdPergunta());
+                        us.setAcertou(uH.isAcertou());
+                        us.createUniqueKey();
+                        realm.copyToRealmOrUpdate(us);
                     }
                     realm.commitTransaction();
                     realm.close();
