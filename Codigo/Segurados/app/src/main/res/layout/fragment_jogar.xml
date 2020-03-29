@@ -123,8 +123,8 @@
 
         <Button
             android:id="@+id/btn_girar_j"
-            android:layout_width="20pt"
-            android:layout_height="20pt"
+            android:layout_width="22pt"
+            android:layout_height="22pt"
             android:layout_gravity="center"
             android:background="@drawable/circle_button"
             android:paddingHorizontal="0.2pt"

@@ -41,9 +41,10 @@ public class SpinningWheelView extends View implements WheelRotation.RotationLis
     private final static int COLORS_RES = R.array.rainbow_dash;
 
     private final static float TOUCH_SCALE_FACTOR = (180.0f / 320) / 2;
-
-    private final static int TEXT_SIZE = 30;
-
+//--------------------------------------------------------------
+    private final static float TEXT_PER_SIZE = 0.0013f;
+    //it have to adjust the screen // gambi
+//--------------------------------------------------------------
     private final static int TEXT_COLOR = Color.WHITE;
 
     private final static int ARROW_COLOR = Color.BLACK;
@@ -133,7 +134,6 @@ public class SpinningWheelView extends View implements WheelRotation.RotationLis
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
         initCircle();
     }
 
@@ -325,6 +325,14 @@ public class SpinningWheelView extends View implements WheelRotation.RotationLis
         invalidate();
     }
 
+    public int adjustTextSize(float porcentage){
+        DisplayMetrics displayMetrics = getContext().getResources().getDisplayMetrics();
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
+        int sizeScreenP = height * width;
+        return (int)(sizeScreenP * porcentage / 100);     //var upercase is final, but is a exception
+    }
+
     public int[] getColors() {
         return colors;
     }
@@ -451,7 +459,9 @@ public class SpinningWheelView extends View implements WheelRotation.RotationLis
             int itemsResId = typedArray.getResourceId(R.styleable.Wheel_wheel_items, 0);
             setItems(itemsResId);
 
-            float wheelTextSize = typedArray.getDimension(R.styleable.Wheel_wheel_text_size, TEXT_SIZE);
+int t = adjustTextSize(TEXT_PER_SIZE);
+System.out.println(t);
+            float wheelTextSize = typedArray.getDimension(R.styleable.Wheel_wheel_text_size, t);
             setWheelTextSize(wheelTextSize);
 
             int wheelTextColor = typedArray.getColor(R.styleable.Wheel_wheel_text_color, TEXT_COLOR);
