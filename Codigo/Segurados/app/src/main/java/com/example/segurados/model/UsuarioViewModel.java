@@ -8,11 +8,12 @@ public class UsuarioViewModel extends RealmObject {
     private int idUsuario;
     private String nome;
     private String perfil;
+    private int qtdQuestoes;
     private String usuario;
     private String token;
 
-
     public UsuarioViewModel(){}
+
 
     public UsuarioViewModel(int idUsuario, String nome, String usuario, String perfil,
                    String token) {
@@ -20,6 +21,7 @@ public class UsuarioViewModel extends RealmObject {
         this.nome = nome;
         this.usuario = usuario;
         this.perfil = perfil;
+        this.qtdQuestoes = qtdQuestoes;
         this.token = token;
     }
 
@@ -60,16 +62,20 @@ public class UsuarioViewModel extends RealmObject {
         return nome;
     }
 
-    public String getEmail() {
-        return usuario;
-    }
-
     public String getPerfil() {
         return perfil;
     }
 
+    public int getQtdQuestoes() {
+        return qtdQuestoes;
+    }
+
+    public void setQtdQuestoes(int qtdQuestoes) {
+        this.qtdQuestoes = qtdQuestoes;
+    }
+
     @Override
     public String toString() {
-        return (nome + " - " + usuario);
+        return (nome + " - " + token);
     }
 }

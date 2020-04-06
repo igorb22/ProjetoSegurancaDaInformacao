@@ -1,6 +1,14 @@
 package com.example.segurados.model;
 
-public class Pergunta {
+import io.realm.Realm;
+import io.realm.RealmObject;
+import io.realm.annotations.Index;
+import io.realm.annotations.PrimaryKey;
+
+public class Pergunta extends RealmObject {
+
+    @PrimaryKey
+    @Index
     private int idPergunta;
     private String questao;
     private String alternativa1;
@@ -13,7 +21,9 @@ public class Pergunta {
     private String dificuldade;
     private int tematicaIdTematica;
 
+    public Pergunta(){
 
+    }
     public Pergunta(int idPergunta, String questao, String alternativa1, String alternativa2,
                     String alternativa3, String alternativa4, int opcaoCorreta, int pontuacao,
                     int tempo, String dificuldade, int tematicaIdTematica) {
@@ -116,5 +126,16 @@ public class Pergunta {
 
     public void setTematicaIdTematica(int tematicaIdTematica) {
         this.tematicaIdTematica = tematicaIdTematica;
+    }
+
+    public static Long autoIncrementId(){
+        Long key = 1L;
+        Realm realm = Realm.getDefaultInstance();
+        try {
+            key = realm.where(Pergunta.class).max("idPergunta").longValue() + 1;
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
+        return key;
     }
 }

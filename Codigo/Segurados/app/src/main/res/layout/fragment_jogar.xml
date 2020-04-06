@@ -1,14 +1,138 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.ui.jogar.JogarFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="fragmetn jogar" />
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginHorizontal="3pt"
+        android:layout_marginTop="10pt"
+        app:cardCornerRadius="3dp"
+        app:cardElevation="4dp"
+        app:cardUseCompatPadding="true">
 
-</FrameLayout>
+        <!-- put whatever you want -->
+        <LinearLayout
+            android:id="@+id/container_perfil_j"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginHorizontal="2pt"
+            android:background="@color/cardview_light_background"
+            android:orientation="vertical"
+            android:weightSum="10">
+
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="2pt"
+                android:orientation="horizontal">
+
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/img_perfil_j"
+                    android:layout_width="40pt"
+                    android:layout_height="40pt"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:src="@drawable/ic_profile" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="1pt"
+                    android:layout_weight="8"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/nome_jogador_j"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="1pt"
+                        android:text="@string/nome_jogador"
+                        android:textAllCaps="true"
+                        android:textSize="7pt" />
+
+                    <TextView
+                        android:id="@+id/pontos_jogador_j"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="1pt"
+                        android:text="@string/pontos_jogador"
+                        android:textAllCaps="true"
+                        android:textSize="7pt" />
+
+                    <TextView
+                        android:id="@+id/qtd_questoes_j"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="1pt"
+                        android:text="@string/qtd_questoes"
+                        android:textAllCaps="true"
+                        android:textSize="7pt" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.cardview.widget.CardView>
+
+    <ProgressBar
+        android:id="@+id/progress_bar_j"
+        style="?android:attr/progressBarStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="5pt" />
+
+    <TextView
+        android:id="@+id/txt_carregando_j"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="Carregando..."
+        android:textAllCaps="true"
+        android:textColor="@color/colorPrimary"
+        android:textSize="12pt" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="180pt"
+        android:layout_marginTop="20pt">
+        <com.adefruandta.spinningwheel.SpinningWheelView
+            android:id="@+id/wheel_j"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_marginHorizontal="4pt"
+            android:visibility="invisible"
+            app:wheel_arrow_color="@color/colorPrimaryDark"
+            app:wheel_arrow_height="30pt"
+            app:wheel_arrow_width="30pt"
+            app:wheel_colors="@array/rainbow_dash"
+            app:wheel_items="@array/dummy"
+            app:wheel_stroke_color="@android:color/black"
+            app:wheel_stroke_width="1pt" />
+
+        <Button
+            android:id="@+id/btn_girar_j"
+            android:layout_width="22pt"
+            android:layout_height="22pt"
+            android:layout_gravity="center"
+            android:background="@drawable/circle_button"
+            android:paddingHorizontal="0.2pt"
+            android:text="@string/girar"
+            android:textAllCaps="true"
+            android:textColor="@android:color/white"
+            android:visibility="invisible" />
+
+    </FrameLayout>
+
+</LinearLayout>

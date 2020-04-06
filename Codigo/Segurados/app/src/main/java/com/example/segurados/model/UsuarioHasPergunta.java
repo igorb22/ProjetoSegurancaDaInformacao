@@ -1,11 +1,25 @@
 package com.example.segurados.model;
 
-public class UsuarioHasPergunta {
-    private int idPergunta;
-    private int idUsuario;
-    private boolean acertou;
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
-    public UsuarioHasPergunta(int idPergunta, int idUsuario, boolean acertou) {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class UsuarioHasPergunta extends RealmObject {
+    @PrimaryKey
+    private String uniqueId;
+    @SerializedName("idPergunta")
+    private int idPergunta;
+    @SerializedName("idUsuario")
+    private int idUsuario;
+    @SerializedName("acertou")
+    private int acertou;
+
+    public UsuarioHasPergunta(){
+
+    }
+    public UsuarioHasPergunta(int idPergunta, int idUsuario, int acertou) {
         this.idPergunta = idPergunta;
         this.idUsuario = idUsuario;
         this.acertou = acertou;
@@ -19,7 +33,7 @@ public class UsuarioHasPergunta {
         this.idUsuario = idUsuario;
     }
 
-    public void setAcertou(boolean acertou) {
+    public void setAcertou(int acertou) {
         this.acertou = acertou;
     }
 
@@ -31,7 +45,11 @@ public class UsuarioHasPergunta {
         return idUsuario;
     }
 
-    public boolean isAcertou() {
+    public int isAcertou() {
         return acertou;
+    }
+
+    public void createUniqueKey() {
+        this.uniqueId = this.idUsuario + "_" + this.idPergunta;
     }
 }

@@ -1,5 +1,6 @@
 package com.example.segurados.service;
 
+import com.example.segurados.util.Constant;
 import com.example.segurados.model.Usuario;
 
 import java.util.List;
@@ -20,7 +21,7 @@ public interface UsuarioService {
     Call<List<Usuario>> getUsuarios();
 
     Retrofit retrofit = new Retrofit.Builder()
-            .baseUrl("http://italabs-001-site1.ctempurl.com/api/")
+            .baseUrl(Constant.BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build();
 }

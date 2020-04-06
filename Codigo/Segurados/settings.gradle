@@ -1,2 +1,3 @@
-include ':app'
+include ':app', ':roletaSegurados'
 rootProject.name='Segurados'
+project(':roletaSegurados').projectDir = new File('spinningwheel')

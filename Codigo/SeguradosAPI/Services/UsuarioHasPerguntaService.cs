@@ -1,5 +1,6 @@
 ﻿using SeguradosAPI.Models;
 using SeguradosAPI.Persistence;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -38,16 +39,15 @@ namespace SeguradosAPI.Services
             return false;
         }
 
-        public UsuarioHasPerguntaModel ObterPorId(int idUsuario, int idPergunta)
-            => _context
-                .UsuarioHasPergunta
-                .Where(r => r.IdUsuario == idUsuario && r.IdPergunta == idPergunta)
-                .Select(r => new UsuarioHasPerguntaModel
-                {
-                    IdPergunta = r.IdPergunta,
-                    Acertou = r.Acertou,
-                    IdUsuario = r.IdUsuario
-                }).FirstOrDefault();
+        public List<UsuarioHasPerguntaModel> ObterPorId(int idUsuario)
+                   => _context
+                       .UsuarioHasPergunta
+                       .Select(r => new UsuarioHasPerguntaModel
+                       {
+                           IdPergunta = r.IdPergunta,
+                           Acertou = r.Acertou,
+                           IdUsuario = r.IdUsuario
+                       }).Where(s => s.IdUsuario == idUsuario) .ToList();
 
         public List<UsuarioHasPerguntaModel> ObterTodos()
             => _context
@@ -75,7 +75,6 @@ namespace SeguradosAPI.Services
             entity.IdUsuario = model.IdUsuario;
             entity.IdPergunta = model.IdPergunta;
             entity.Acertou = model.Acertou;
-
             return entity;
         }
     }
